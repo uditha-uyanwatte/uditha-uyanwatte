@@ -254,7 +254,7 @@
                 ========================= -->
 
                 <form
-                    action="AppointmentServlet"
+                    action="AddAppointmentServlet"
                     method="post">
 
 
