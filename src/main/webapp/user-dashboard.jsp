@@ -196,7 +196,7 @@ double pendingAmount =
             </p>
 
 
-            <a href="appointment.jsp"
+            <a href="patient-appointment.jsp"
                class="book-btn">
 
                 <i class="bi bi-calendar-plus"></i>
@@ -374,7 +374,7 @@ double pendingAmount =
 
     </div>
 
-    <a href="appointment.jsp"
+    <a href="patient-appointment.jsp"
        class="btn btn-info text-white mt-3">
 
         Book Your Appointment
@@ -405,7 +405,7 @@ double pendingAmount =
                     </div>
 
 
-                    <a href="appointment.jsp"
+                    <a href="patient-appointment.jsp"
                        class="quick-action">
 
                         <i class="bi bi-calendar-plus"></i>

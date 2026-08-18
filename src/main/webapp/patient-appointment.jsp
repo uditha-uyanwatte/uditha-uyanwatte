@@ -260,11 +260,15 @@
 
                     <!-- Action -->
 
-                    <input
-                        type="hidden"
-                        name="action"
-                        value="patientAdd">
+ 
+    <input type="hidden"
+           name="patientId"
+           value="<%= loggedUser.getId() %>">
 
+    <input
+        type="hidden"
+        name="action"
+        value="patientAdd">
 
                     <div class="row">
 
@@ -445,6 +449,8 @@
                                     name="notes"
                                     placeholder="Tell us anything we should know before your appointment..."
                                 ></textarea>
+
+
 
                             </div>
 
