@@ -1,12 +1,14 @@
 <%@ page import="java.util.List" %>
+
 <%@ page import="dao.DentistDAO" %>
+
 <%@ page import="model.Dentist" %>
+
 <%@ page import="model.User" %>
 
 <%@ page language="java"
          contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-
 
 <%
     // =========================
@@ -19,7 +21,6 @@
 
         return;
     }
-
 
     User loggedUser =
             (User) session.getAttribute("user");
@@ -49,11 +50,16 @@
             dentistDAO.getAllDentists();
 
 
+    // =========================
+    // GET ALERT PARAMETERS
+    // =========================
+
     String error =
             request.getParameter("error");
 
     String appointment =
             request.getParameter("appointment");
+
 %>
 
 
@@ -68,8 +74,9 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-
-    <title>Book Appointment | Sunrise Dental Clinic</title>
+    <title>
+        Book Appointment | Sunrise Dental Clinic
+    </title>
 
 
     <!-- Bootstrap -->
@@ -87,12 +94,11 @@
 
 
     <!-- Main CSS -->
-<link
-    rel="stylesheet"
-    href="${pageContext.request.contextPath}/assets/css/style.css">
 
+    <link
+        rel="stylesheet"
+        href="${pageContext.request.contextPath}/assets/css/style.css">
 
-    
 </head>
 
 
@@ -134,6 +140,7 @@
 
                 </a>
 
+
             </div>
 
         </div>
@@ -147,27 +154,36 @@
 
     <div class="container">
 
-
         <div class="booking-wrapper">
 
+
+            <!-- HEADING -->
 
             <div class="booking-heading">
 
                 <span>
+
                     SUNRISE DENTAL CLINIC
+
                 </span>
 
                 <h1>
+
                     Book an Appointment
+
                 </h1>
 
                 <p>
+
                     Schedule your dental visit with
                     one of our professional dentists.
+
                 </p>
 
             </div>
 
+
+            <!-- BOOKING CARD -->
 
             <div class="booking-card">
 
@@ -176,6 +192,9 @@
                      ALERTS
                 ========================= -->
 
+
+                <!-- PATIENT PROFILE ERROR -->
+
                 <% if ("patient".equals(error)) { %>
 
                     <div class="booking-alert booking-error">
@@ -183,12 +202,34 @@
                         <i class="bi bi-exclamation-circle"></i>
 
                         Your patient profile could not be found.
+
                         Please contact the clinic.
 
                     </div>
 
                 <% } %>
 
+
+                <!-- =========================
+                     SLOT ALREADY BOOKED
+                ========================= -->
+
+                <% if ("slot".equals(error)) { %>
+
+                    <div class="booking-alert booking-error">
+
+                        <i class="bi bi-calendar-x"></i>
+
+                        This appointment slot is already booked.
+
+                        Please select another date or time.
+
+                    </div>
+
+                <% } %>
+
+
+                <!-- GENERAL BOOKING ERROR -->
 
                 <% if ("failed".equals(error)) { %>
 
@@ -197,12 +238,15 @@
                         <i class="bi bi-x-circle"></i>
 
                         Unable to book the appointment.
+
                         Please try again.
 
                     </div>
 
                 <% } %>
 
+
+                <!-- SUCCESS -->
 
                 <% if ("success".equals(appointment)) { %>
 
@@ -260,16 +304,18 @@
 
                     <!-- Action -->
 
- 
-    <input
-        type="hidden"
-        name="action"
-        value="patientAdd">
+                    <input
+                        type="hidden"
+                        name="action"
+                        value="patientAdd">
+
 
                     <div class="row">
 
 
-                        <!-- Dentist -->
+                        <!-- =========================
+                             DENTIST
+                        ========================= -->
 
                         <div class="col-md-6">
 
@@ -289,26 +335,31 @@
                                     required>
 
                                     <option value="">
+
                                         Select Dentist
+
                                     </option>
 
 
                                     <%
-                                    for (Dentist d : dentists) {
+                                        for (Dentist d : dentists) {
                                     %>
 
                                         <option
                                             value="<%= d.getDentistId() %>">
 
                                             Dr.
+
                                             <%= d.getFirstName() %>
+
                                             <%= d.getLastName() %>
 
                                         </option>
 
                                     <%
-                                    }
+                                        }
                                     %>
+
 
                                 </select>
 
@@ -317,7 +368,9 @@
                         </div>
 
 
-                        <!-- Date -->
+                        <!-- =========================
+                             DATE
+                        ========================= -->
 
                         <div class="col-md-6">
 
@@ -343,7 +396,9 @@
                         </div>
 
 
-                        <!-- Time -->
+                        <!-- =========================
+                             TIME
+                        ========================= -->
 
                         <div class="col-md-6">
 
@@ -368,7 +423,9 @@
                         </div>
 
 
-                        <!-- Treatment -->
+                        <!-- =========================
+                             TREATMENT
+                        ========================= -->
 
                         <div class="col-md-6">
 
@@ -388,35 +445,51 @@
                                     required>
 
                                     <option value="">
+
                                         Select Treatment
+
                                     </option>
 
                                     <option value="General Checkup">
+
                                         General Checkup
+
                                     </option>
 
                                     <option value="Dental Cleaning">
+
                                         Dental Cleaning
+
                                     </option>
 
                                     <option value="Teeth Whitening">
+
                                         Teeth Whitening
+
                                     </option>
 
                                     <option value="Dental Filling">
+
                                         Dental Filling
+
                                     </option>
 
                                     <option value="Root Canal Treatment">
+
                                         Root Canal Treatment
+
                                     </option>
 
                                     <option value="Tooth Extraction">
+
                                         Tooth Extraction
+
                                     </option>
 
                                     <option value="Orthodontic Consultation">
+
                                         Orthodontic Consultation
+
                                     </option>
 
                                 </select>
@@ -426,7 +499,9 @@
                         </div>
 
 
-                        <!-- Notes -->
+                        <!-- =========================
+                             NOTES
+                        ========================= -->
 
                         <div class="col-12">
 
@@ -443,10 +518,7 @@
 
                                 <textarea
                                     name="notes"
-                                    placeholder="Tell us anything we should know before your appointment..."
-                                ></textarea>
-
-
+                                    placeholder="Tell us anything we should know before your appointment..."></textarea>
 
                             </div>
 
@@ -456,7 +528,9 @@
                     </div>
 
 
-                    <!-- Submit -->
+                    <!-- =========================
+                         SUBMIT
+                    ========================= -->
 
                     <button
                         type="submit"

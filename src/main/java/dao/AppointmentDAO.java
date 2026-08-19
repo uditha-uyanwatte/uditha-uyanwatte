@@ -43,6 +43,71 @@ public class AppointmentDAO {
 
         return status;
     }
+        
+     // =========================
+     // CHECK APPOINTMENT SLOT
+     // =========================
+
+     public boolean isAppointmentSlotBooked(
+             int dentistId,
+             String appointmentDate,
+             String appointmentTime) {
+
+         boolean booked = false;
+
+         try {
+
+             Connection con =
+                     DBConnection.getConnection();
+
+             String sql =
+                     "SELECT appointment_id " +
+                     "FROM appointments " +
+                     "WHERE dentist_id = ? " +
+                     "AND appointment_date = ? " +
+                     "AND appointment_time = ? " +
+                     "AND status NOT IN ('Cancelled')";
+
+             PreparedStatement ps =
+                     con.prepareStatement(sql);
+
+             ps.setInt(
+                     1,
+                     dentistId
+             );
+
+             ps.setString(
+                     2,
+                     appointmentDate
+             );
+
+             ps.setString(
+                     3,
+                     appointmentTime
+             );
+
+             ResultSet rs =
+                     ps.executeQuery();
+
+             if (rs.next()) {
+
+                 booked = true;
+             }
+
+             rs.close();
+             ps.close();
+             con.close();
+
+         } catch (Exception e) {
+
+             e.printStackTrace();
+         }
+
+         return booked;
+     }
+    
+    
+    
 
     // Get All Appointments
     public List<Appointment> getAllAppointments() {
@@ -445,5 +510,6 @@ public class AppointmentDAO {
      }
 
      return list;
+     
  }
 }

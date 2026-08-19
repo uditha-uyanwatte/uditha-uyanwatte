@@ -4,12 +4,14 @@ import java.io.IOException;
 
 import dao.AppointmentDAO;
 import dao.PatientDashboardDAO;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import model.Appointment;
 import model.User;
 
@@ -23,6 +25,7 @@ public class AddAppointmentServlet extends HttpServlet {
 
     private PatientDashboardDAO patientDAO =
             new PatientDashboardDAO();
+
 
     @Override
     protected void doPost(
@@ -43,6 +46,7 @@ public class AddAppointmentServlet extends HttpServlet {
                 session.getAttribute("user") == null) {
 
                 response.sendRedirect("login.jsp");
+
                 return;
             }
 
@@ -65,10 +69,67 @@ public class AddAppointmentServlet extends HttpServlet {
             int patientId =
                     patientDAO.getPatientIdByUserId(userId);
 
+
             if (patientId <= 0) {
 
                 response.sendRedirect(
                     "patient-appointment.jsp?error=patient"
+                );
+
+                return;
+            }
+
+
+            // =========================
+            // GET FORM DATA
+            // =========================
+
+            int dentistId =
+                    Integer.parseInt(
+                        request.getParameter("dentistId")
+                    );
+
+
+            String appointmentDate =
+                    request.getParameter(
+                        "appointmentDate"
+                    );
+
+
+            String appointmentTime =
+                    request.getParameter(
+                        "appointmentTime"
+                    );
+
+
+            String treatment =
+                    request.getParameter(
+                        "treatment"
+                    );
+
+
+            String notes =
+                    request.getParameter(
+                        "notes"
+                    );
+
+
+            // =========================
+            // CHECK APPOINTMENT SLOT
+            // =========================
+
+            boolean slotBooked =
+                    appointmentDAO.isAppointmentSlotBooked(
+                        dentistId,
+                        appointmentDate,
+                        appointmentTime
+                    );
+
+
+            if (slotBooked) {
+
+                response.sendRedirect(
+                    "patient-appointment.jsp?error=slot"
                 );
 
                 return;
@@ -82,30 +143,39 @@ public class AddAppointmentServlet extends HttpServlet {
             Appointment appointment =
                     new Appointment();
 
-            appointment.setPatientId(patientId);
+
+            appointment.setPatientId(
+                    patientId
+            );
+
 
             appointment.setDentistId(
-                Integer.parseInt(
-                    request.getParameter("dentistId")
-                )
+                    dentistId
             );
+
 
             appointment.setAppointmentDate(
-                request.getParameter("appointmentDate")
+                    appointmentDate
             );
+
 
             appointment.setAppointmentTime(
-                request.getParameter("appointmentTime")
+                    appointmentTime
             );
 
-            appointment.setStatus("Pending");
+
+            appointment.setStatus(
+                    "Pending"
+            );
+
 
             appointment.setTreatment(
-                request.getParameter("treatment")
+                    treatment
             );
 
+
             appointment.setNotes(
-                request.getParameter("notes")
+                    notes
             );
 
 
@@ -135,6 +205,7 @@ public class AddAppointmentServlet extends HttpServlet {
                     "patient-appointment.jsp?error=failed"
                 );
             }
+
 
         } catch (Exception e) {
 
