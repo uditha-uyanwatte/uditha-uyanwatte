@@ -239,58 +239,126 @@ public class AppointmentDAO {
 
         return list;
     }
-    public List<Appointment> searchAppointments(String keyword) {
+ // =========================
+ // SEARCH + STATUS FILTER
+ // =========================
 
-        List<Appointment> list = new ArrayList<>();
+ public List<Appointment> searchAppointments(
+         String keyword,
+         String status) {
 
-        try {
+     List<Appointment> list = new ArrayList<>();
 
-            Connection con = DBConnection.getConnection();
+     try {
 
-            String sql =
-                "SELECT * FROM appointments WHERE " +
-                "appointment_date LIKE ? OR " +
-                "status LIKE ? OR " +
-                "treatment LIKE ? " +
-                "ORDER BY appointment_date DESC, appointment_time DESC";
+         Connection con = DBConnection.getConnection();
 
-            PreparedStatement ps = con.prepareStatement(sql);
+         StringBuilder sql = new StringBuilder(
+             "SELECT * FROM appointments WHERE 1=1 "
+         );
 
-            String search = "%" + keyword + "%";
+         List<String> params = new ArrayList<>();
 
-            ps.setString(1, search);
-            ps.setString(2, search);
-            ps.setString(3, search);
+         // Search
+         if (keyword != null &&
+             !keyword.trim().isEmpty()) {
 
-            ResultSet rs = ps.executeQuery();
+             sql.append(
+                 "AND (" +
+                 "appointment_date LIKE ? OR " +
+                 "status LIKE ? OR " +
+                 "treatment LIKE ?" +
+                 ") "
+             );
 
-            while (rs.next()) {
+             String search =
+                 "%" + keyword.trim() + "%";
 
-                Appointment a = new Appointment();
+             params.add(search);
+             params.add(search);
+             params.add(search);
+         }
 
-                a.setAppointmentId(rs.getInt("appointment_id"));
-                a.setPatientId(rs.getInt("patient_id"));
-                a.setDentistId(rs.getInt("dentist_id"));
-                a.setAppointmentDate(rs.getString("appointment_date"));
-                a.setAppointmentTime(rs.getString("appointment_time"));
-                a.setStatus(rs.getString("status"));
-                a.setTreatment(rs.getString("treatment"));
-                a.setNotes(rs.getString("notes"));
+         // Status filter
+         if (status != null &&
+             !status.trim().isEmpty() &&
+             !"All".equalsIgnoreCase(status)) {
 
-                list.add(a);
-            }
+             sql.append("AND status = ? ");
 
-            rs.close();
-            ps.close();
-            con.close();
+             params.add(status);
+         }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+         sql.append(
+             "ORDER BY appointment_date DESC, " +
+             "appointment_time DESC"
+         );
 
-        return list;
-    }
-    
+         PreparedStatement ps =
+             con.prepareStatement(sql.toString());
+
+         for (int i = 0; i < params.size(); i++) {
+
+             ps.setString(
+                 i + 1,
+                 params.get(i)
+             );
+         }
+
+         ResultSet rs =
+             ps.executeQuery();
+
+         while (rs.next()) {
+
+             Appointment a =
+                 new Appointment();
+
+             a.setAppointmentId(
+                 rs.getInt("appointment_id")
+             );
+
+             a.setPatientId(
+                 rs.getInt("patient_id")
+             );
+
+             a.setDentistId(
+                 rs.getInt("dentist_id")
+             );
+
+             a.setAppointmentDate(
+                 rs.getString("appointment_date")
+             );
+
+             a.setAppointmentTime(
+                 rs.getString("appointment_time")
+             );
+
+             a.setStatus(
+                 rs.getString("status")
+             );
+
+             a.setTreatment(
+                 rs.getString("treatment")
+             );
+
+             a.setNotes(
+                 rs.getString("notes")
+             );
+
+             list.add(a);
+         }
+
+         rs.close();
+         ps.close();
+         con.close();
+
+     } catch (Exception e) {
+
+         e.printStackTrace();
+     }
+
+     return list;
+ }
     
  // =========================
  // GET UPCOMING APPOINTMENTS FOR PATIENT
