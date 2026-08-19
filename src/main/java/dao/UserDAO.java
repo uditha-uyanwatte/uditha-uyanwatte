@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 import model.User;
 import util.DBConnection;
@@ -82,75 +83,248 @@ public class UserDAO {
 
 
     // =========================
-    // REGISTER
+    // REGISTER USER + PATIENT
     // =========================
 
     public boolean register(User user) {
 
-        boolean success = false;
+        Connection con = null;
 
         try {
 
-            Connection con =
-                    DBConnection.getConnection();
+            con = DBConnection.getConnection();
 
-            String sql =
+            // Start transaction
+            con.setAutoCommit(false);
+
+
+            // =========================
+            // INSERT USER
+            // =========================
+
+            String userSql =
                     "INSERT INTO users " +
                     "(username, password, full_name, email, phone, role) " +
                     "VALUES (?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement ps =
-                    con.prepareStatement(sql);
+            PreparedStatement userPs =
+                    con.prepareStatement(
+                            userSql,
+                            Statement.RETURN_GENERATED_KEYS
+                    );
 
-            ps.setString(
+            userPs.setString(
                     1,
                     user.getUsername()
             );
 
-            ps.setString(
+            userPs.setString(
                     2,
                     user.getPassword()
             );
 
-            ps.setString(
+            userPs.setString(
                     3,
                     user.getFullName()
             );
 
-            ps.setString(
+            userPs.setString(
                     4,
                     user.getEmail()
             );
 
-            ps.setString(
+            userPs.setString(
                     5,
                     user.getPhone()
             );
 
-            ps.setString(
+            userPs.setString(
                     6,
                     user.getRole()
             );
 
+
             int result =
-                    ps.executeUpdate();
+                    userPs.executeUpdate();
 
-            if (result > 0) {
 
-                success = true;
+            if (result == 0) {
 
+                con.rollback();
+
+                userPs.close();
+
+                return false;
             }
 
-            ps.close();
-            con.close();
+
+            // =========================
+            // GET NEW USER ID
+            // =========================
+
+            int userId = 0;
+
+            ResultSet keys =
+                    userPs.getGeneratedKeys();
+
+            if (keys.next()) {
+
+                userId =
+                        keys.getInt(1);
+
+            } else {
+
+                con.rollback();
+
+                keys.close();
+                userPs.close();
+
+                return false;
+            }
+
+            keys.close();
+            userPs.close();
+
+
+            // =========================
+            // SPLIT FULL NAME
+            // =========================
+
+            String fullName =
+                    user.getFullName().trim();
+
+            String firstName;
+            String lastName;
+
+
+            if (fullName.contains(" ")) {
+
+                int spaceIndex =
+                        fullName.indexOf(" ");
+
+                firstName =
+                        fullName.substring(
+                                0,
+                                spaceIndex
+                        );
+
+                lastName =
+                        fullName.substring(
+                                spaceIndex + 1
+                        );
+
+            } else {
+
+                firstName = fullName;
+
+                lastName = fullName;
+            }
+
+
+            // =========================
+            // INSERT PATIENT
+            // =========================
+
+            String patientSql =
+                    "INSERT INTO patients " +
+                    "(user_id, first_name, last_name, phone, email) " +
+                    "VALUES (?, ?, ?, ?, ?)";
+
+            PreparedStatement patientPs =
+                    con.prepareStatement(patientSql);
+
+            patientPs.setInt(
+                    1,
+                    userId
+            );
+
+            patientPs.setString(
+                    2,
+                    firstName
+            );
+
+            patientPs.setString(
+                    3,
+                    lastName
+            );
+
+            patientPs.setString(
+                    4,
+                    user.getPhone()
+            );
+
+            patientPs.setString(
+                    5,
+                    user.getEmail()
+            );
+
+
+            int patientResult =
+                    patientPs.executeUpdate();
+
+
+            if (patientResult == 0) {
+
+                con.rollback();
+
+                patientPs.close();
+
+                return false;
+            }
+
+
+            patientPs.close();
+
+
+            // =========================
+            // COMMIT
+            // =========================
+
+            con.commit();
+
+            con.setAutoCommit(true);
+
+            return true;
+
 
         } catch (Exception e) {
 
             e.printStackTrace();
 
-        }
+            try {
 
-        return success;
+                if (con != null) {
+
+                    con.rollback();
+
+                }
+
+            } catch (Exception rollbackError) {
+
+                rollbackError.printStackTrace();
+
+            }
+
+            return false;
+
+
+        } finally {
+
+            try {
+
+                if (con != null &&
+                    !con.isClosed()) {
+
+                    con.close();
+
+                }
+
+            } catch (Exception closeError) {
+
+                closeError.printStackTrace();
+
+            }
+        }
     }
 
 
