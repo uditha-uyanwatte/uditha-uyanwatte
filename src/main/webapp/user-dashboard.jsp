@@ -8,39 +8,38 @@
 
 
 <%
-if (session.getAttribute("user") == null) {
-    response.sendRedirect("login.jsp");
-    return;
-}
+    if (session.getAttribute("user") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
 
-User loggedUser = (User) session.getAttribute("user");
+    User loggedUser = (User) session.getAttribute("user");
 
-PatientDashboardDAO patientDAO =
-        new PatientDashboardDAO();
+    PatientDashboardDAO patientDAO =
+            new PatientDashboardDAO();
 
-int userId = loggedUser.getId();
+    int userId = loggedUser.getId();
 
-int patientId =
-        patientDAO.getPatientIdByUserId(userId);
+    int patientId =
+            patientDAO.getPatientIdByUserId(userId);
 
-int upcomingAppointments =
-        patientDAO.getUpcomingAppointments(patientId);
+    int upcomingAppointments =
+            patientDAO.getUpcomingAppointments(patientId);
 
-Appointment upcomingAppointment =
-        patientDAO.getUpcomingAppointment(patientId);
+    int completedTreatments =
+            patientDAO.getCompletedTreatments(patientId);
 
+    int totalBills =
+            patientDAO.getTotalBills(patientId);
 
-int completedTreatments =
-        patientDAO.getCompletedTreatments(patientId);
+    double totalPaid =
+            patientDAO.getTotalPaidAmount(patientId);
 
-int totalBills =
-        patientDAO.getTotalBills(patientId);
+    double pendingAmount =
+            patientDAO.getPendingAmount(patientId);
 
-double totalPaid =
-        patientDAO.getTotalPaidAmount(patientId);
-
-double pendingAmount =
-        patientDAO.getPendingAmount(patientId);
+    Appointment upcomingAppointment =
+            patientDAO.getUpcomingAppointment(patientId);
 %>
 <%
     // =========================
@@ -257,7 +256,7 @@ double pendingAmount =
 
                 <div class="patient-stat">
 
-                    <div class="patient-stat">
+            
 
                     <div class="stat-icon">
 
@@ -295,7 +294,7 @@ double pendingAmount =
                             Upcoming Appointment
                         </h4>
 
-                        <a href="appointments.jsp"
+                        <a href="my-appointments.jsp"
                            class="view-link">
 
                             View All
@@ -343,13 +342,10 @@ double pendingAmount =
         </div>
 
     </div>
-
-    <a href="appointments.jsp"
-       class="btn btn-info text-white mt-3">
-
-        View Appointment
-
-    </a>
+<a href="my-appointments.jsp"
+   class="btn btn-info text-white mt-3">
+    View Appointment
+</a>
 
 <% } else { %>
 

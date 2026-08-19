@@ -261,10 +261,6 @@
                     <!-- Action -->
 
  
-    <input type="hidden"
-           name="patientId"
-           value="<%= loggedUser.getId() %>">
-
     <input
         type="hidden"
         name="action"
