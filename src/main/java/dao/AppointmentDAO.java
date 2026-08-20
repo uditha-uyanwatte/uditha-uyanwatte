@@ -512,4 +512,134 @@ public class AppointmentDAO {
      return list;
      
  }
+//=========================
+//GET APPOINTMENTS BY DENTIST
+//=========================
+
+public List<Appointment> getAppointmentsByDentist(int dentistId) {
+
+  List<Appointment> list = new ArrayList<>();
+
+  try {
+
+      Connection con =
+              DBConnection.getConnection();
+
+      String sql =
+              "SELECT a.*, " +
+              "CONCAT(p.first_name, ' ', p.last_name) AS patient_name " +
+              "FROM appointments a " +
+              "JOIN patients p " +
+              "ON a.patient_id = p.patient_id " +
+              "WHERE a.dentist_id = ? " +
+              "ORDER BY a.appointment_date ASC, " +
+              "a.appointment_time ASC";
+
+      PreparedStatement ps =
+              con.prepareStatement(sql);
+
+      ps.setInt(1, dentistId);
+
+      ResultSet rs =
+              ps.executeQuery();
+
+      while (rs.next()) {
+
+          Appointment a =
+                  new Appointment();
+
+          a.setAppointmentId(
+                  rs.getInt("appointment_id")
+          );
+
+          a.setPatientId(
+                  rs.getInt("patient_id")
+          );
+
+          a.setDentistId(
+                  rs.getInt("dentist_id")
+          );
+
+          a.setAppointmentDate(
+                  rs.getString("appointment_date")
+          );
+
+          a.setAppointmentTime(
+                  rs.getString("appointment_time")
+          );
+
+          a.setStatus(
+                  rs.getString("status")
+          );
+
+          a.setTreatment(
+                  rs.getString("treatment")
+          );
+
+          a.setNotes(
+                  rs.getString("notes")
+          );
+
+          a.setPatientName(
+                  rs.getString("patient_name")
+          );
+
+          list.add(a);
+      }
+
+      rs.close();
+      ps.close();
+      con.close();
+
+  } catch (Exception e) {
+
+      e.printStackTrace();
+  }
+
+  return list;
+}
+
+
+//=========================
+//UPDATE APPOINTMENT STATUS
+//=========================
+
+public boolean updateAppointmentStatus(
+      int appointmentId,
+      int dentistId,
+      String status) {
+
+  boolean success = false;
+
+  try {
+
+      Connection con =
+              DBConnection.getConnection();
+
+      String sql =
+              "UPDATE appointments " +
+              "SET status=? " +
+              "WHERE appointment_id=? " +
+              "AND dentist_id=?";
+
+      PreparedStatement ps =
+              con.prepareStatement(sql);
+
+      ps.setString(1, status);
+      ps.setInt(2, appointmentId);
+      ps.setInt(3, dentistId);
+
+      success =
+              ps.executeUpdate() > 0;
+
+      ps.close();
+      con.close();
+
+  } catch (Exception e) {
+
+      e.printStackTrace();
+  }
+
+  return success;
+}
 }

@@ -232,4 +232,67 @@ public class DentistDAO {
 
         return list;
     }
+ // =========================
+ // GET DENTIST BY USER ID
+ // =========================
+
+ public Dentist getDentistByUserId(int userId) {
+
+     Dentist dentist = null;
+
+     try {
+
+         Connection con = DBConnection.getConnection();
+
+         String sql =
+                 "SELECT * FROM dentists WHERE user_id=?";
+
+         PreparedStatement ps =
+                 con.prepareStatement(sql);
+
+         ps.setInt(1, userId);
+
+         ResultSet rs =
+                 ps.executeQuery();
+
+         if (rs.next()) {
+
+             dentist = new Dentist();
+
+             dentist.setDentistId(
+                     rs.getInt("dentist_id")
+             );
+
+             dentist.setFirstName(
+                     rs.getString("first_name")
+             );
+
+             dentist.setLastName(
+                     rs.getString("last_name")
+             );
+
+             dentist.setSpecialization(
+                     rs.getString("specialization")
+             );
+
+             dentist.setPhone(
+                     rs.getString("phone")
+             );
+
+             dentist.setEmail(
+                     rs.getString("email")
+             );
+         }
+
+         rs.close();
+         ps.close();
+         con.close();
+
+     } catch (Exception e) {
+
+         e.printStackTrace();
+     }
+
+     return dentist;
+ }
 }

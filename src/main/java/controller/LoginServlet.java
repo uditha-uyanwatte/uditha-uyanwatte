@@ -16,59 +16,150 @@ public class LoginServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    UserDAO dao = new UserDAO();
+    private UserDAO dao = new UserDAO();
 
     @Override
-    protected void doPost(HttpServletRequest request,
+    protected void doPost(
+            HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String username =
+                request.getParameter("username");
 
-        User user = dao.login(username, password);
+        String password =
+                request.getParameter("password");
+
+        User user =
+                dao.login(username, password);
+
+
+        // =========================
+        // LOGIN SUCCESS
+        // =========================
 
         if (user != null) {
 
-            HttpSession session = request.getSession();
+            HttpSession session =
+                    request.getSession();
 
-            session.setAttribute("user", user);
-            session.setAttribute("username", user.getUsername());
-            session.setAttribute("fullName", user.getFullName());
-            session.setAttribute("role", user.getRole());
+            session.setAttribute(
+                    "user",
+                    user
+            );
 
-            String role = user.getRole();
+            session.setAttribute(
+                    "username",
+                    user.getUsername()
+            );
 
+            session.setAttribute(
+                    "fullName",
+                    user.getFullName()
+            );
+
+            session.setAttribute(
+                    "role",
+                    user.getRole()
+            );
+
+
+            // =========================
+            // ROLE REDIRECTION
+            // =========================
+
+            String role =
+                    user.getRole();
+
+
+            // ADMIN
             if ("ADMIN".equalsIgnoreCase(role)) {
 
-                response.sendRedirect("dashboard.jsp");
+                response.sendRedirect(
+                        "dashboard.jsp"
+                );
 
-            } else if ("RECEPTIONIST".equalsIgnoreCase(role)) {
+            }
 
-                response.sendRedirect("receptionist-dashboard.jsp");
 
-            } else if ("PATIENT".equalsIgnoreCase(role)) {
+            // RECEPTIONIST
+            else if (
+                    "RECEPTIONIST"
+                    .equalsIgnoreCase(role)
+            ) {
+
+                response.sendRedirect(
+                        "receptionist-dashboard.jsp"
+                );
+
+            }
+
+
+            // PATIENT
+            else if (
+                    "PATIENT"
+                    .equalsIgnoreCase(role)
+            ) {
+
+                response.sendRedirect(
+                        "user-dashboard.jsp"
+                );
+
+            }
+
+
+            // DENTIST
+            else if (
+                    "DENTIST"
+                    .equalsIgnoreCase(role)
+            ) {
+
+            	response.sendRedirect(
+            	        "DentistDashboardServlet"
+            	);
+
+            }else if ("PATIENT".equalsIgnoreCase(role)) {
 
                 response.sendRedirect("user-dashboard.jsp");
+                }
 
-            } else {
+
+            // INVALID ROLE
+            else {
 
                 request.setAttribute(
-                    "error",
-                    "Invalid user role"
+                        "error",
+                        "Invalid user role"
                 );
 
                 request.getRequestDispatcher(
-                    "login.jsp"
-                ).forward(request, response);
+                        "login.jsp"
+                ).forward(
+                        request,
+                        response
+                );
             }
-
-        } else {
-
-            request.setAttribute("error", "Invalid Username or Password");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
 
         }
 
+
+        // =========================
+        // LOGIN FAILED
+        // =========================
+
+        else {
+
+            request.setAttribute(
+                    "error",
+                    "Invalid Username or Password"
+            );
+
+            request.getRequestDispatcher(
+                    "login.jsp"
+            ).forward(
+                    request,
+                    response
+            );
+        }
     }
 }
