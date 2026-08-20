@@ -42,7 +42,21 @@
                 <i class="bi bi-person-vcard-fill"></i>
                 <span>Dentists</span>
             </a>
+            
+            
+            
         </li>
+        <li class="nav-item">
+
+    <a href="UserManagementServlet" class="nav-link">
+
+        <i class="bi bi-person-gear"></i>
+
+        <span>User Management</span>
+
+    </a>
+
+</li>
 
         <li class="nav-item">
             <a href="appointments.jsp" class="nav-link">
@@ -50,6 +64,8 @@
                 <span>Appointments</span>
             </a>
         </li>
+        
+        
 
         <li class="nav-item">
             <a href="billing.jsp" class="nav-link">

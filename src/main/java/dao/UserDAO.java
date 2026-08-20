@@ -8,6 +8,9 @@ import java.sql.Statement;
 import model.User;
 import util.DBConnection;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserDAO {
 
     // =========================
@@ -414,5 +417,192 @@ public class UserDAO {
 
         return exists;
     }
+ // =========================
+ // GET ALL USERS
+ // =========================
 
+ public List<User> getAllUsers() {
+
+     List<User> list = new ArrayList<>();
+
+     try {
+
+         Connection con =
+                 DBConnection.getConnection();
+
+         String sql =
+                 "SELECT * FROM users ORDER BY id DESC";
+
+         PreparedStatement ps =
+                 con.prepareStatement(sql);
+
+         ResultSet rs =
+                 ps.executeQuery();
+
+         while (rs.next()) {
+
+             User user = new User();
+
+             user.setId(rs.getInt("id"));
+             user.setUsername(rs.getString("username"));
+             user.setPassword(rs.getString("password"));
+             user.setFullName(rs.getString("full_name"));
+             user.setEmail(rs.getString("email"));
+             user.setPhone(rs.getString("phone"));
+             user.setRole(rs.getString("role"));
+
+             list.add(user);
+         }
+
+         rs.close();
+         ps.close();
+         con.close();
+
+     } catch (Exception e) {
+
+         e.printStackTrace();
+     }
+
+     return list;
+ }
+
+
+ // =========================
+ // SEARCH USERS
+ // =========================
+
+ public List<User> searchUsers(String keyword) {
+
+     List<User> list = new ArrayList<>();
+
+     try {
+
+         Connection con =
+                 DBConnection.getConnection();
+
+         String sql =
+                 "SELECT * FROM users WHERE " +
+                 "username LIKE ? OR " +
+                 "full_name LIKE ? OR " +
+                 "email LIKE ? OR " +
+                 "role LIKE ? " +
+                 "ORDER BY id DESC";
+
+         PreparedStatement ps =
+                 con.prepareStatement(sql);
+
+         String search =
+                 "%" + keyword + "%";
+
+         ps.setString(1, search);
+         ps.setString(2, search);
+         ps.setString(3, search);
+         ps.setString(4, search);
+
+         ResultSet rs =
+                 ps.executeQuery();
+
+         while (rs.next()) {
+
+             User user = new User();
+
+             user.setId(rs.getInt("id"));
+             user.setUsername(rs.getString("username"));
+             user.setPassword(rs.getString("password"));
+             user.setFullName(rs.getString("full_name"));
+             user.setEmail(rs.getString("email"));
+             user.setPhone(rs.getString("phone"));
+             user.setRole(rs.getString("role"));
+
+             list.add(user);
+         }
+
+         rs.close();
+         ps.close();
+         con.close();
+
+     } catch (Exception e) {
+
+         e.printStackTrace();
+     }
+
+     return list;
+ }
+
+
+ // =========================
+ // UPDATE USER ROLE
+ // =========================
+
+ public boolean updateUserRole(
+         int userId,
+         String role) {
+
+     boolean success = false;
+
+     try {
+
+         Connection con =
+                 DBConnection.getConnection();
+
+         String sql =
+                 "UPDATE users SET role=? WHERE id=?";
+
+         PreparedStatement ps =
+                 con.prepareStatement(sql);
+
+         ps.setString(1, role);
+         ps.setInt(2, userId);
+
+         success =
+                 ps.executeUpdate() > 0;
+
+         ps.close();
+         con.close();
+
+     } catch (Exception e) {
+
+         e.printStackTrace();
+     }
+
+     return success;
+ }
+
+
+ // =========================
+ // DELETE USER
+ // =========================
+
+ public boolean deleteUser(int userId) {
+
+     boolean success = false;
+
+     try {
+
+         Connection con =
+                 DBConnection.getConnection();
+
+         String sql =
+                 "DELETE FROM users WHERE id=?";
+
+         PreparedStatement ps =
+                 con.prepareStatement(sql);
+
+         ps.setInt(1, userId);
+
+         success =
+                 ps.executeUpdate() > 0;
+
+         ps.close();
+         con.close();
+
+     } catch (Exception e) {
+
+         e.printStackTrace();
+     }
+
+     return success;
+ }
+
+    
 }
