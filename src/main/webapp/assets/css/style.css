@@ -6914,3 +6914,40 @@ line-height:1.8;
             }
 
         }
+        
+        
+        
+        .modal-content {
+    border: none;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.modal-header {
+    background: #092b3a;
+    color: white;
+    border-bottom: 1px solid #20c4e8;
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.modal-footer {
+    padding: 18px 30px;
+}
+
+.modal-title {
+    font-weight: 700;
+}
+
+.btn-outline-info {
+    border-color: #20c4e8;
+    color: #0aaed0;
+    font-weight: 600;
+}
+
+.btn-outline-info:hover {
+    background: #20c4e8;
+    color: white;
+}

@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.Billing;
 import model.User;
 
 @WebServlet("/PayBillServlet")
@@ -24,90 +23,106 @@ public class PayBillServlet extends HttpServlet {
     private PatientDashboardDAO patientDAO =
             new PatientDashboardDAO();
 
+
     @Override
     protected void doPost(
             HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session =
-                request.getSession(false);
 
-        if (session == null ||
-                session.getAttribute("user") == null) {
+        HttpSession session =
+                request.getSession();
+
+
+        // =========================
+        // LOGIN CHECK
+        // =========================
+
+        User user =
+                (User) session.getAttribute("user");
+
+
+        if (user == null) {
 
             response.sendRedirect("login.jsp");
             return;
         }
 
-        try {
 
-            User user =
-                    (User) session.getAttribute("user");
+        // =========================
+        // GET BILL ID
+        // =========================
 
-            int userId =
-                    user.getId();
+        String billIdParameter =
+                request.getParameter("billId");
 
-            int patientId =
-                    patientDAO.getPatientIdByUserId(userId);
 
-            int billId =
-                    Integer.parseInt(
-                            request.getParameter("billId")
-                    );
-
-            // Security check
-            Billing bill =
-                    billingDAO.getBillByIdAndPatient(
-                            billId,
-                            patientId
-                    );
-
-            if (bill == null) {
-
-                response.sendRedirect(
-                        "PatientBillingServlet?error=invalid"
-                );
-
-                return;
-            }
-
-            // Already paid
-            if ("Paid".equalsIgnoreCase(
-                    bill.getPaymentStatus())) {
-
-                response.sendRedirect(
-                        "PatientBillingServlet?message=alreadyPaid"
-                );
-
-                return;
-            }
-
-            boolean success =
-                    billingDAO.markAsPaid(
-                            billId,
-                            patientId
-                    );
-
-            if (success) {
-
-                response.sendRedirect(
-                        "PatientBillingServlet?payment=success"
-                );
-
-            } else {
-
-                response.sendRedirect(
-                        "PatientBillingServlet?payment=failed"
-                );
-            }
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
+        if (billIdParameter == null ||
+            billIdParameter.trim().isEmpty()) {
 
             response.sendRedirect(
-                    "PatientBillingServlet?payment=failed"
+                    "PatientBillingServlet?error=invalid"
+            );
+
+            return;
+        }
+
+
+        int billId;
+
+        try {
+
+            billId =
+                    Integer.parseInt(
+                            billIdParameter
+                    );
+
+        } catch (NumberFormatException e) {
+
+            response.sendRedirect(
+                    "PatientBillingServlet?error=invalid"
+            );
+
+            return;
+        }
+
+
+        // =========================
+        // GET PATIENT ID
+        // =========================
+
+        int userId =
+                user.getId();
+
+
+        int patientId =
+                patientDAO.getPatientIdByUserId(
+                        userId
+                );
+
+
+        // =========================
+        // PAY BILL
+        // =========================
+
+        boolean success =
+                billingDAO.payBill(
+                        billId,
+                        patientId
+                );
+
+
+        if (success) {
+
+            response.sendRedirect(
+                    "PatientBillingServlet?paid=1"
+            );
+
+        } else {
+
+            response.sendRedirect(
+                    "PatientBillingServlet?error=payment"
             );
         }
     }

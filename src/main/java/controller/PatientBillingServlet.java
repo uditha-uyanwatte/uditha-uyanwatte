@@ -24,57 +24,106 @@ public class PatientBillingServlet extends HttpServlet {
     private PatientDashboardDAO patientDAO =
             new PatientDashboardDAO();
 
+
     @Override
     protected void doGet(
             HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session =
-                request.getSession(false);
 
-        if (session == null ||
-                session.getAttribute("user") == null) {
+        HttpSession session = request.getSession();
+
+
+        // =========================
+        // LOGIN CHECK
+        // =========================
+
+        User user =
+                (User) session.getAttribute("user");
+
+
+        if (user == null) {
 
             response.sendRedirect("login.jsp");
             return;
         }
 
-        try {
 
-            User user =
-                    (User) session.getAttribute("user");
+        // =========================
+        // GET PATIENT ID
+        // =========================
 
-            int userId = user.getId();
+        int userId = user.getId();
 
-            int patientId =
-                    patientDAO.getPatientIdByUserId(userId);
+        int patientId =
+                patientDAO.getPatientIdByUserId(userId);
 
-            if (patientId <= 0) {
 
-                response.sendRedirect(
-                        "user-dashboard.jsp?error=patient"
-                );
+        // =========================
+        // GET PATIENT BILLS
+        // =========================
 
-                return;
+        List<Billing> bills =
+                billingDAO.getBillsByPatientId(patientId);
+
+
+        // =========================
+        // CALCULATE TOTALS
+        // =========================
+
+        double totalAmount = 0;
+
+        double totalPaid = 0;
+
+        double pendingAmount = 0;
+
+
+        for (Billing bill : bills) {
+
+            totalAmount += bill.getAmount();
+
+
+            if ("Paid".equalsIgnoreCase(
+                    bill.getPaymentStatus())) {
+
+                totalPaid += bill.getAmount();
+
+            } else {
+
+                pendingAmount += bill.getAmount();
+
             }
-
-            List<Billing> bills =
-                    billingDAO.getBillsByPatientId(patientId);
-
-            request.setAttribute("bills", bills);
-
-            request.getRequestDispatcher(
-                    "patient-billing.jsp"
-            ).forward(request, response);
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-            response.sendRedirect(
-                    "user-dashboard.jsp?error=billing"
-            );
         }
+
+
+        // =========================
+        // SEND DATA TO JSP
+        // =========================
+
+        request.setAttribute(
+                "bills",
+                bills
+        );
+
+        request.setAttribute(
+                "totalAmount",
+                totalAmount
+        );
+
+        request.setAttribute(
+                "totalPaid",
+                totalPaid
+        );
+
+        request.setAttribute(
+                "pendingAmount",
+                pendingAmount
+        );
+
+
+        request.getRequestDispatcher(
+                "patient-billing.jsp"
+        ).forward(request, response);
     }
 }
