@@ -247,4 +247,173 @@ public class BillingDAO {
 
         return list;
     }
+    
+ // Get Bills By Patient ID
+    public List<Billing> getBillsByPatientId(int patientId) {
+
+        List<Billing> list = new ArrayList<>();
+
+        try {
+
+            Connection con = DBConnection.getConnection();
+
+            String sql =
+                    "SELECT b.bill_id, b.patient_id, b.treatment_id, " +
+                    "p.first_name, p.last_name, " +
+                    "t.treatment_name, " +
+                    "b.amount, b.payment_status, b.payment_date " +
+                    "FROM billing b " +
+                    "JOIN patients p ON b.patient_id = p.patient_id " +
+                    "JOIN treatments t ON b.treatment_id = t.treatment_id " +
+                    "WHERE b.patient_id=? " +
+                    "ORDER BY b.bill_id DESC";
+
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setInt(1, patientId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                Billing bill = new Billing();
+
+                bill.setBillId(rs.getInt("bill_id"));
+                bill.setPatientId(rs.getInt("patient_id"));
+                bill.setTreatmentId(rs.getInt("treatment_id"));
+
+                bill.setPatientName(
+                        rs.getString("first_name") + " "
+                        + rs.getString("last_name")
+                );
+
+                bill.setTreatmentName(
+                        rs.getString("treatment_name")
+                );
+
+                bill.setAmount(
+                        rs.getDouble("amount")
+                );
+
+                bill.setPaymentStatus(
+                        rs.getString("payment_status")
+                );
+
+                bill.setPaymentDate(
+                        rs.getString("payment_date")
+                );
+
+                list.add(bill);
+            }
+
+            rs.close();
+            ps.close();
+            con.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+
+    // Get Bill By ID + Patient ID
+    public Billing getBillByIdAndPatient(int billId, int patientId) {
+
+        Billing bill = null;
+
+        try {
+
+            Connection con = DBConnection.getConnection();
+
+            String sql =
+                    "SELECT b.bill_id, b.patient_id, b.treatment_id, " +
+                    "p.first_name, p.last_name, " +
+                    "t.treatment_name, " +
+                    "b.amount, b.payment_status, b.payment_date " +
+                    "FROM billing b " +
+                    "JOIN patients p ON b.patient_id = p.patient_id " +
+                    "JOIN treatments t ON b.treatment_id = t.treatment_id " +
+                    "WHERE b.bill_id=? AND b.patient_id=?";
+
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setInt(1, billId);
+            ps.setInt(2, patientId);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                bill = new Billing();
+
+                bill.setBillId(rs.getInt("bill_id"));
+                bill.setPatientId(rs.getInt("patient_id"));
+                bill.setTreatmentId(rs.getInt("treatment_id"));
+
+                bill.setPatientName(
+                        rs.getString("first_name") + " "
+                        + rs.getString("last_name")
+                );
+
+                bill.setTreatmentName(
+                        rs.getString("treatment_name")
+                );
+
+                bill.setAmount(
+                        rs.getDouble("amount")
+                );
+
+                bill.setPaymentStatus(
+                        rs.getString("payment_status")
+                );
+
+                bill.setPaymentDate(
+                        rs.getString("payment_date")
+                );
+            }
+
+            rs.close();
+            ps.close();
+            con.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return bill;
+    }
+
+
+    // Mark Bill As Paid
+    public boolean markAsPaid(int billId, int patientId) {
+
+        boolean status = false;
+
+        try {
+
+            Connection con = DBConnection.getConnection();
+
+            String sql =
+                    "UPDATE billing " +
+                    "SET payment_status='Paid' " +
+                    "WHERE bill_id=? AND patient_id=?";
+
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setInt(1, billId);
+            ps.setInt(2, patientId);
+
+            status = ps.executeUpdate() > 0;
+
+            ps.close();
+            con.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return status;
+    }
 }
