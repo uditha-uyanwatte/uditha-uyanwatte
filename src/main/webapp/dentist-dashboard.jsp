@@ -471,7 +471,7 @@
     </a>
 
 
-    <a href="profile.jsp"
+    <a href="DentistProfileServlet"
        class="nav-item">
 
         <i class="bi bi-person-circle"></i>

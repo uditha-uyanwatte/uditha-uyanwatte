@@ -6951,3 +6951,1956 @@ line-height:1.8;
     background: #20c4e8;
     color: white;
 }
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   SUNRISE DENTAL - MODERN HOME PAGE
+   ========================================================= */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+    color: #102b36;
+    background: #ffffff;
+}
+
+
+/* ================= NAVBAR ================= */
+
+.modern-navbar {
+    background: rgba(4, 31, 39, 0.92);
+    backdrop-filter: blur(18px);
+    padding: 16px 0;
+    transition: 0.3s ease;
+}
+
+.brand-logo {
+    color: #ffffff !important;
+    font-size: 21px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-logo strong {
+    color: #22d3ee;
+}
+
+.brand-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(34, 211, 238, 0.12);
+    color: #22d3ee;
+}
+
+.modern-navbar .nav-link {
+    color: rgba(255,255,255,0.72) !important;
+    font-weight: 500;
+    margin: 0 10px;
+    transition: 0.3s;
+}
+
+.modern-navbar .nav-link:hover,
+.modern-navbar .nav-link.active {
+    color: #22d3ee !important;
+}
+
+.nav-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.nav-login {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 9px 17px;
+}
+
+.nav-register {
+    color: #ffffff;
+    text-decoration: none;
+    background: #16bdd9;
+    padding: 10px 19px;
+    border-radius: 9px;
+    font-weight: 700;
+    transition: 0.3s;
+}
+
+.nav-register:hover {
+    transform: translateY(-2px);
+}
+
+.modern-navbar .navbar-toggler {
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #ffffff;
+}
+
+.modern-navbar .navbar-toggler i {
+    font-size: 26px;
+}
+
+
+/* ================= HERO ================= */
+
+.modern-hero {
+    min-height: 790px;
+    padding-top: 160px;
+    padding-bottom: 90px;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 80% 20%,
+        rgba(34,211,238,0.16),
+        transparent 30%),
+        linear-gradient(135deg, #031f27, #073844 55%, #062b35);
+    color: #ffffff;
+}
+
+.hero-glow {
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.18;
+    pointer-events: none;
+}
+
+.glow-one {
+    background: #18cce9;
+    top: 80px;
+    right: -150px;
+}
+
+.glow-two {
+    background: #0ea5e9;
+    bottom: -250px;
+    left: -180px;
+}
+
+.hero-small-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border-radius: 30px;
+    background: rgba(34,211,238,0.1);
+    border: 1px solid rgba(34,211,238,0.25);
+    color: #6ee7f9;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.hero-heading {
+    font-size: clamp(50px, 6vw, 82px);
+    line-height: 0.98;
+    font-weight: 800;
+    letter-spacing: -3px;
+    margin: 25px 0;
+}
+
+.hero-heading span {
+    display: block;
+    color: #22d3ee;
+}
+
+.hero-description {
+    max-width: 600px;
+    color: rgba(255,255,255,0.68);
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 32px;
+}
+
+.hero-primary-btn,
+.hero-secondary-btn {
+    text-decoration: none;
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-weight: 700;
+    transition: 0.3s ease;
+}
+
+.hero-primary-btn {
+    color: #04232b;
+    background: #22d3ee;
+}
+
+.hero-primary-btn:hover {
+    color: #04232b;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(34,211,238,0.22);
+}
+
+.hero-secondary-btn {
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.hero-secondary-btn:hover {
+    color: #22d3ee;
+    border-color: #22d3ee;
+}
+
+.hero-mini-stats {
+    display: flex;
+    gap: 45px;
+    margin-top: 50px;
+}
+
+.hero-mini-stats div {
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-mini-stats strong {
+    font-size: 25px;
+}
+
+.hero-mini-stats span {
+    color: rgba(255,255,255,0.52);
+    font-size: 13px;
+}
+
+
+/* ================= HERO VISUAL ================= */
+
+.hero-visual {
+    min-height: 510px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.visual-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(34,211,238,0.2);
+}
+
+.circle-one {
+    width: 420px;
+    height: 420px;
+}
+
+.circle-two {
+    width: 300px;
+    height: 300px;
+    background: rgba(34,211,238,0.04);
+}
+
+.hero-tooth {
+    font-size: 210px;
+    z-index: 2;
+    filter:
+        drop-shadow(0 20px 30px rgba(0,0,0,0.3));
+    animation: toothFloat 4s ease-in-out infinite;
+}
+
+@keyframes toothFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+.tooth-card {
+    position: absolute;
+    z-index: 4;
+    right: 10px;
+    top: 65px;
+    width: 155px;
+    padding: 18px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    backdrop-filter: blur(14px);
+}
+
+.tooth-icon {
+    color: #22d3ee;
+    font-size: 25px;
+}
+
+.tooth-card span,
+.tooth-card strong {
+    display: block;
+}
+
+.tooth-card span {
+    color: rgba(255,255,255,0.5);
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.tooth-card strong {
+    font-size: 15px;
+}
+
+.floating-card {
+    position: absolute;
+    z-index: 5;
+    display: flex;
+    gap: 11px;
+    align-items: center;
+    padding: 13px 16px;
+    border-radius: 13px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.14);
+    backdrop-filter: blur(15px);
+}
+
+.floating-card i {
+    color: #22d3ee;
+    font-size: 23px;
+}
+
+.floating-card strong,
+.floating-card small {
+    display: block;
+}
+
+.floating-card strong {
+    font-size: 13px;
+}
+
+.floating-card small {
+    color: rgba(255,255,255,0.5);
+    font-size: 10px;
+}
+
+.card-top {
+    left: 10px;
+    top: 100px;
+}
+
+.card-bottom {
+    right: 0;
+    bottom: 90px;
+}
+
+.trust-strip {
+    padding: 35px 0;
+    background: #ffffff;
+    border-bottom: 1px solid #e8f0f3;
+}
+
+.trust-strip div div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.trust-strip i {
+    font-size: 25px;
+    color: #10bcd7;
+    margin-bottom: 5px;
+}
+
+.trust-strip strong {
+    color: #153743;
+}
+
+.trust-strip span {
+    font-size: 12px;
+    color: #81929a;
+}
+
+
+/* ================= SECTIONS ================= */
+
+.modern-section {
+    padding: 110px 0;
+}
+
+.section-heading {
+    max-width: 700px;
+    margin: 0 auto 55px;
+    text-align: center;
+}
+
+.section-heading span {
+    color: #0bb8d4;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.section-heading h2 {
+    margin-top: 12px;
+    color: #092f3b;
+    font-size: clamp(34px, 4vw, 52px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+}
+
+.section-heading p {
+    color: #71838b;
+    line-height: 1.8;
+}
+
+
+/* ================= SERVICES ================= */
+
+.modern-service-card {
+    height: 100%;
+    padding: 32px;
+    border: 1px solid #e5eef1;
+    border-radius: 20px;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+    transition: 0.35s ease;
+}
+
+.modern-service-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(16,188,215,0.35);
+    box-shadow: 0 20px 50px rgba(9,47,59,0.09);
+}
+
+.service-number {
+    position: absolute;
+    right: 22px;
+    top: 18px;
+    font-size: 42px;
+    font-weight: 800;
+    color: #f0f6f8;
+}
+
+.modern-service-icon {
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    background: #e9fbfe;
+    color: #09abc7;
+    font-size: 25px;
+    margin-bottom: 25px;
+}
+
+.modern-service-card h4 {
+    color: #092f3b;
+    font-weight: 750;
+}
+
+.modern-service-card p {
+    color: #788b92;
+    line-height: 1.7;
+}
+
+.modern-service-card a {
+    color: #08abc8;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+
+/* ================= ABOUT ================= */
+
+.modern-about {
+    padding: 110px 0;
+    background: #f5fafb;
+}
+
+.about-modern-visual {
+    min-height: 450px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-main-card {
+    width: 330px;
+    height: 330px;
+    border-radius: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(145deg,#073641,#0b6475);
+    color: #ffffff;
+    box-shadow: 0 30px 70px rgba(4,48,59,0.2);
+}
+
+.about-main-card i {
+    color: #22d3ee;
+    font-size: 70px;
+    margin-bottom: 15px;
+}
+
+.about-main-card h3 {
+    font-weight: 800;
+}
+
+.about-main-card p {
+    color: rgba(255,255,255,0.65);
+}
+
+.experience-card {
+    position: absolute;
+    right: 15px;
+    bottom: 40px;
+    padding: 20px 25px;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.experience-card strong {
+    display: block;
+    color: #09b7d4;
+    font-size: 35px;
+}
+
+.experience-card span {
+    color: #6f8188;
+    font-size: 13px;
+}
+
+.about-text {
+    color: #70838b;
+    line-height: 1.9;
+}
+
+.about-checks {
+    margin: 25px 0;
+}
+
+.about-checks div {
+    margin-bottom: 13px;
+    color: #294b56;
+    font-weight: 600;
+}
+
+.about-checks i {
+    color: #0dbbd8;
+    margin-right: 8px;
+}
+
+.modern-btn {
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+    text-decoration: none;
+    color: #ffffff;
+    background: #0b5363;
+    padding: 13px 20px;
+    border-radius: 9px;
+    font-weight: 700;
+}
+
+
+/* ================= WHY ================= */
+
+.why-modern {
+    padding: 110px 0;
+}
+
+.why-modern-card {
+    height: 100%;
+    padding: 30px;
+    border-radius: 18px;
+    background: #f6fafb;
+    transition: 0.3s;
+}
+
+.why-modern-card:hover {
+    transform: translateY(-6px);
+    background: #eefcff;
+}
+
+.why-modern-card i {
+    color: #0dbbd8;
+    font-size: 32px;
+}
+
+.why-modern-card h4 {
+    margin-top: 18px;
+    color: #0a3541;
+}
+
+.why-modern-card p {
+    color: #7a8d94;
+    line-height: 1.7;
+}
+
+
+/* ================= DOCTORS ================= */
+
+.modern-doctor-card {
+    text-align: center;
+    padding: 35px 25px;
+    border-radius: 22px;
+    border: 1px solid #e5eef1;
+    background: #ffffff;
+    transition: 0.35s;
+}
+
+.modern-doctor-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(9,47,59,0.1);
+}
+
+.doctor-avatar {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: linear-gradient(145deg,#dffaff,#aeeef8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0a7184;
+    font-size: 70px;
+}
+
+.doctor-rating {
+    color: #f5b700;
+    letter-spacing: 3px;
+}
+
+.modern-doctor-card h3 {
+    color: #0a3541;
+    margin-top: 10px;
+}
+
+.modern-doctor-card p {
+    color: #7a8d94;
+}
+
+.modern-doctor-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #ffffff;
+    background: #0b5363;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+/* ================= CTA ================= */
+
+.final-cta {
+    padding: 70px 0;
+}
+
+.cta-box {
+    border-radius: 25px;
+    padding: 50px;
+    color: #ffffff;
+    background: linear-gradient(120deg,#062d38,#087c91);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    overflow: hidden;
+}
+
+.cta-box span {
+    color: #6ee7f9;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.cta-box h2 {
+    font-size: 35px;
+    font-weight: 800;
+    margin: 10px 0;
+}
+
+.cta-box p {
+    color: rgba(255,255,255,0.65);
+    margin: 0;
+}
+
+.cta-btn {
+    white-space: nowrap;
+    text-decoration: none;
+    background: #22d3ee;
+    color: #06303a;
+    padding: 14px 23px;
+    border-radius: 10px;
+    font-weight: 800;
+}
+
+
+/* ================= CONTACT ================= */
+
+.contact-modern {
+    padding: 100px 0;
+    background: #f5fafb;
+}
+
+.contact-modern-card {
+    height: 100%;
+    text-align: center;
+    padding: 35px;
+    border-radius: 18px;
+    background: #ffffff;
+    border: 1px solid #e5eef1;
+}
+
+.contact-modern-card i {
+    color: #0bbbd8;
+    font-size: 32px;
+}
+
+.contact-modern-card h4 {
+    margin-top: 15px;
+    color: #123b47;
+}
+
+.contact-modern-card p {
+    color: #7b8e95;
+    line-height: 1.8;
+}
+
+
+/* ================= FOOTER ================= */
+
+.modern-footer {
+    padding: 75px 0 20px;
+    background: #031f27;
+    color: #ffffff;
+}
+
+.footer-modern-brand {
+    display: inline-block;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 23px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.footer-modern-brand i {
+    color: #22d3ee;
+    margin-right: 8px;
+}
+
+.footer-modern-brand strong {
+    color: #22d3ee;
+}
+
+.modern-footer p {
+    max-width: 430px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.8;
+}
+
+.modern-footer h5 {
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.modern-footer .col-lg-3 a,
+.modern-footer .col-lg-4 a {
+    display: block;
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+
+.footer-social {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.footer-social a {
+    width: 38px;
+    height: 38px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    color: #22d3ee !important;
+    margin: 0 !important;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 45px;
+    padding-top: 20px;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    font-size: 13px;
+}
+
+
+/* ================= BACK TO TOP ================= */
+
+.back-to-top {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #11bdd9;
+    color: #ffffff;
+    text-decoration: none;
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px);
+    transition: 0.3s;
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 991px) {
+
+    .modern-navbar .navbar-collapse {
+        background: #062d38;
+        margin-top: 15px;
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    .nav-actions {
+        margin-top: 15px;
+    }
+
+    .modern-hero {
+        padding-top: 140px;
+    }
+
+    .hero-visual {
+        margin-top: 60px;
+    }
+
+    .cta-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
+
+@media (max-width: 767px) {
+
+    .hero-heading {
+        font-size: 48px;
+        letter-spacing: -2px;
+    }
+
+    .hero-mini-stats {
+        gap: 25px;
+    }
+
+    .hero-visual {
+        min-height: 400px;
+    }
+
+    .circle-one {
+        width: 300px;
+        height: 300px;
+    }
+
+    .circle-two {
+        width: 220px;
+        height: 220px;
+    }
+
+    .hero-tooth {
+        font-size: 150px;
+    }
+
+    .floating-card {
+        transform: scale(0.85);
+    }
+
+    .card-top {
+        left: 0;
+    }
+
+    .card-bottom {
+        right: 0;
+    }
+
+    .tooth-card {
+        right: 0;
+        top: 25px;
+    }
+
+    .modern-section,
+    .modern-about,
+    .why-modern,
+    .contact-modern {
+        padding: 75px 0;
+    }
+
+    .cta-box {
+        padding: 35px 25px;
+    }
+
+    .cta-box h2 {
+        font-size: 28px;
+    }
+
+}
+
+@media (max-width: 500px) {
+
+    .hero-actions {
+        flex-direction: column;
+    }
+
+    .hero-primary-btn,
+    .hero-secondary-btn {
+        text-align: center;
+    }
+
+    .hero-mini-stats {
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .hero-mini-stats strong {
+        font-size: 20px;
+    }
+
+    .hero-visual {
+        min-height: 330px;
+    }
+
+    .hero-tooth {
+        font-size: 120px;
+    }
+
+}
+
+/* ================= ABOUT IMAGE ================= */
+
+.about-modern-visual {
+    position: relative;
+    width: 100%;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+}
+
+.about-image-wrapper {
+    width: 88%;
+    height: 470px;
+    overflow: hidden;
+    border-radius: 30px;
+    background: #eaf8fb;
+    box-shadow: 0 25px 60px rgba(0, 45, 55, 0.15);
+}
+
+.about-clinic-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+}
+
+
+/* EXPERIENCE CARD */
+
+.experience-card {
+    position: absolute;
+    right: 0;
+    bottom: 15px;
+
+    width: 260px;
+    min-height: 180px;
+
+    background: #ffffff;
+
+    border-radius: 28px;
+
+    padding: 35px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    box-shadow: 0 20px 50px rgba(0, 40, 50, 0.15);
+
+    z-index: 2;
+}
+
+.experience-card strong {
+    font-size: 58px;
+    line-height: 1;
+    font-weight: 800;
+    color: #16bfdc;
+    margin-bottom: 15px;
+}
+
+.experience-card span {
+    font-size: 18px;
+    font-weight: 600;
+    color: #647984;
+}
+
+
+/* ================= ABOUT RESPONSIVE ================= */
+
+@media (max-width: 991px) {
+
+    .about-modern-visual {
+        min-height: 450px;
+    }
+
+    .about-image-wrapper {
+        width: 90%;
+        height: 430px;
+    }
+
+    .experience-card {
+        width: 230px;
+        min-height: 160px;
+        padding: 28px;
+    }
+
+    .experience-card strong {
+        font-size: 48px;
+    }
+
+}
+
+
+@media (max-width: 767px) {
+
+    .about-modern-visual {
+        min-height: auto;
+        padding-bottom: 70px;
+    }
+
+    .about-image-wrapper {
+        width: 100%;
+        height: 350px;
+        border-radius: 22px;
+    }
+
+    .experience-card {
+        right: 15px;
+        bottom: 0;
+
+        width: 200px;
+        min-height: 135px;
+
+        padding: 22px;
+
+        border-radius: 20px;
+    }
+
+    .experience-card strong {
+        font-size: 42px;
+        margin-bottom: 8px;
+    }
+
+    .experience-card span {
+        font-size: 15px;
+    }
+
+}
+
+
+
+/* ================= CONTACT ================= */
+
+.contact-modern {
+    padding: 100px 0;
+    background: #f5fbfd;
+}
+
+
+/* CONTACT CARDS */
+
+.contact-modern-card {
+    height: 100%;
+    padding: 40px 30px;
+    text-align: center;
+
+    background: #ffffff;
+
+    border: 1px solid rgba(20, 190, 220, 0.12);
+
+    border-radius: 24px;
+
+    box-shadow: 0 15px 40px rgba(0, 45, 55, 0.08);
+
+    transition: all 0.3s ease;
+}
+
+.contact-modern-card:hover {
+    transform: translateY(-8px);
+
+    box-shadow: 0 25px 50px rgba(0, 45, 55, 0.14);
+}
+
+
+/* ICON */
+
+.contact-icon {
+    width: 70px;
+    height: 70px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: rgba(30, 195, 220, 0.12);
+
+    color: #18c4df;
+
+    font-size: 28px;
+}
+
+
+.contact-modern-card h4 {
+    margin-bottom: 12px;
+
+    color: #073744;
+
+    font-size: 22px;
+
+    font-weight: 700;
+}
+
+
+.contact-modern-card p {
+    margin: 0;
+
+    color: #71838a;
+
+    font-size: 16px;
+
+    line-height: 1.7;
+}
+
+
+/* CONTACT LINKS */
+
+.contact-link {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 18px;
+
+    color: #13bddd;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition: 0.3s;
+}
+
+
+.contact-link:hover {
+    color: #078ca8;
+
+    gap: 12px;
+}
+
+
+/* ================= CONTACT FORM ================= */
+
+.contact-form-card {
+    padding: 50px;
+
+    background: #ffffff;
+
+    border-radius: 30px;
+
+    box-shadow: 0 20px 55px rgba(0, 45, 55, 0.10);
+
+    border: 1px solid rgba(20, 190, 220, 0.10);
+}
+
+
+.contact-form-heading {
+    text-align: center;
+
+    margin-bottom: 35px;
+}
+
+
+.contact-form-heading span {
+    color: #13bddb;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+}
+
+
+.contact-form-heading h3 {
+    margin: 10px 0;
+
+    color: #073744;
+
+    font-size: 30px;
+
+    font-weight: 800;
+}
+
+
+.contact-form-heading p {
+    margin: 0;
+
+    color: #71838a;
+}
+
+
+/* LABELS */
+
+.contact-form-card label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #173f49;
+
+    font-size: 15px;
+
+    font-weight: 600;
+}
+
+
+/* INPUTS */
+
+.contact-form-card .form-control {
+    min-height: 52px;
+
+    padding: 13px 16px;
+
+    border: 1px solid #d8e8ec;
+
+    border-radius: 12px;
+
+    background: #f9fcfd;
+
+    color: #173f49;
+
+    box-shadow: none;
+
+    transition: all 0.25s ease;
+}
+
+
+.contact-form-card textarea.form-control {
+    min-height: 140px;
+
+    resize: vertical;
+}
+
+
+.contact-form-card .form-control:focus {
+    border-color: #19c4df;
+
+    background: #ffffff;
+
+    box-shadow: 0 0 0 4px rgba(25, 196, 223, 0.10);
+}
+
+
+.contact-form-card .form-control::placeholder {
+    color: #9aabb0;
+}
+
+
+/* SUBMIT BUTTON */
+
+.contact-submit {
+    border: none;
+
+    padding: 15px 30px;
+
+    border-radius: 12px;
+
+    background: #18c4df;
+
+    color: #ffffff;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    transition: all 0.3s ease;
+}
+
+
+.contact-submit:hover {
+    background: #08aeca;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 10px 25px rgba(24, 196, 223, 0.25);
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 767px) {
+
+    .contact-modern {
+        padding: 70px 0;
+    }
+
+    .contact-form-card {
+        padding: 30px 20px;
+
+        border-radius: 22px;
+    }
+
+    .contact-form-heading h3 {
+        font-size: 25px;
+    }
+
+    .contact-modern-card {
+        padding: 30px 20px;
+    }
+
+    .contact-submit {
+        width: 100%;
+    }
+
+}
+
+
+
+/* =====================================================
+   MODERN GALLERY
+===================================================== */
+
+.modern-gallery {
+    padding: 100px 0;
+    background: #ffffff;
+}
+
+
+/* HEADING */
+
+.modern-gallery .section-heading {
+    margin-bottom: 50px;
+}
+
+
+/* GRID */
+
+.gallery-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 24px;
+}
+
+
+/* CARD */
+
+.gallery-card {
+    position: relative;
+
+    height: 280px;
+
+    overflow: hidden;
+
+    border-radius: 22px;
+
+    background: #eaf8fb;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 12px 35px
+        rgba(0, 45, 55, 0.10);
+
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+
+/* IMAGE */
+
+.gallery-card img {
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    object-position: center;
+
+    transition:
+        transform 0.6s ease;
+}
+
+
+/* HOVER */
+
+.gallery-card:hover {
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 20px 45px
+        rgba(0, 45, 55, 0.16);
+}
+
+
+.gallery-card:hover img {
+    transform: scale(1.07);
+}
+
+
+/* OVERLAY */
+
+.gallery-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    padding: 25px;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(0, 40, 50, 0.88),
+            rgba(0, 40, 50, 0.05)
+        );
+
+    opacity: 0;
+
+    transition:
+        opacity 0.35s ease;
+}
+
+
+.gallery-card:hover .gallery-overlay {
+    opacity: 1;
+}
+
+
+/* OVERLAY CONTENT */
+
+.gallery-overlay > div {
+    transform:
+        translateY(15px);
+
+    transition:
+        transform 0.35s ease;
+
+    color: #ffffff;
+}
+
+
+.gallery-card:hover
+.gallery-overlay > div {
+    transform:
+        translateY(0);
+}
+
+
+/* ICON */
+
+.gallery-overlay i {
+    width: 44px;
+
+    height: 44px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 12px;
+
+    border-radius: 50%;
+
+    background: #19c5df;
+
+    color: #ffffff;
+
+    font-size: 19px;
+}
+
+
+/* TITLE */
+
+.gallery-overlay h4 {
+    margin: 0 0 5px;
+
+    font-size: 20px;
+
+    font-weight: 700;
+}
+
+
+/* TEXT */
+
+.gallery-overlay span {
+    color:
+        rgba(255,255,255,0.75);
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   LIGHTBOX
+===================================================== */
+
+.gallery-lightbox {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px;
+
+    background:
+        rgba(0, 25, 32, 0.94);
+}
+
+
+.gallery-lightbox img {
+    max-width: 90vw;
+
+    max-height: 85vh;
+
+    object-fit: contain;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 25px 70px
+        rgba(0,0,0,0.45);
+}
+
+
+/* CLOSE BUTTON */
+
+.gallery-close {
+    position: absolute;
+
+    top: 25px;
+
+    right: 30px;
+
+    width: 50px;
+
+    height: 50px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        rgba(255,255,255,0.12);
+
+    color: #ffffff;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+
+.gallery-close:hover {
+    background: #19c5df;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 991px) {
+
+    .gallery-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 20px;
+    }
+
+    .gallery-card {
+        height: 250px;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 575px) {
+
+    .modern-gallery {
+        padding: 70px 0;
+    }
+
+    .gallery-grid {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+    }
+
+    .gallery-card {
+        height: 260px;
+
+        border-radius: 18px;
+    }
+
+    /*
+       On mobile show overlay
+       without requiring hover.
+    */
+
+    .gallery-overlay {
+        opacity: 1;
+    }
+
+    .gallery-overlay > div {
+        transform: translateY(0);
+    }
+
+}
+
+
+/* ================= DOCTORS ================= */
+
+.modern-doctors {
+    padding: 100px 0;
+    background: #f6fbfd;
+}
+
+.doctor-card {
+    height: 100%;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #dcecf0;
+    border-radius: 24px;
+    box-shadow: 0 12px 35px rgba(0, 50, 60, 0.08);
+    transition: 0.35s ease;
+}
+
+.doctor-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 22px 50px rgba(0, 50, 60, 0.15);
+}
+
+.doctor-image {
+    position: relative;
+    height: 260px;
+    overflow: hidden;
+    background: #e8f8fb;
+}
+
+.doctor-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s ease;
+}
+
+.doctor-card:hover .doctor-image img {
+    transform: scale(1.05);
+}
+
+.doctor-status {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    padding: 7px 12px;
+    border-radius: 30px;
+    background: #ffffff;
+    color: #16a085;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.doctor-content {
+    padding: 28px;
+    text-align: center;
+}
+
+.doctor-rating {
+    margin-bottom: 12px;
+}
+
+.doctor-rating i {
+    color: #ffc107;
+    margin: 0 2px;
+}
+
+.doctor-content h3 {
+    margin-bottom: 7px;
+    color: #073b46;
+    font-size: 23px;
+    font-weight: 700;
+}
+
+.doctor-specialization {
+    margin-bottom: 22px;
+    color: #71858d;
+    font-weight: 500;
+}
+
+.doctor-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.doctor-contact div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #294b55;
+    font-size: 14px;
+}
+
+.doctor-contact i {
+    color: #16c5df;
+    width: 20px;
+}
+
+.doctor-book-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    padding: 13px 20px;
+    border-radius: 12px;
+    background: #16c5df;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.doctor-book-btn:hover {
+    background: #079fba;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.empty-doctors {
+    padding: 60px 20px;
+    text-align: center;
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid #dcecf0;
+}
+
+.empty-doctors i {
+    font-size: 50px;
+    color: #16c5df;
+}
+
+.empty-doctors h4 {
+    margin-top: 15px;
+    color: #073b46;
+}
+
+.empty-doctors p {
+    color: #71858d;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 767px) {
+
+    .modern-doctors {
+        padding: 70px 0;
+    }
+
+    .doctor-image {
+        height: 240px;
+    }
+
+    .doctor-content {
+        padding: 22px;
+    }
+
+    .doctor-content h3 {
+        font-size: 21px;
+    }
+
+}
+
+ /* =========================
+           DENTIST IMAGE
+        ========================= */
+
+        .dentist-avatar {
+
+            width: 50px;
+            height: 50px;
+
+            min-width: 50px;
+
+            border-radius: 50%;
+
+            overflow: hidden;
+
+            background: #eaf8fb;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border: 2px solid rgba(25, 196, 223, 0.25);
+
+        }
+
+
+        .dentist-avatar img {
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+
+        }
+
+
+        /* =========================
+           IMAGE PREVIEW
+        ========================= */
+
+        .image-preview-wrapper {
+
+            margin-top: 12px;
+
+            display: none;
+
+        }
+
+
+        .image-preview {
+
+            width: 90px;
+            height: 90px;
+
+            object-fit: cover;
+
+            border-radius: 15px;
+
+            border: 2px solid #19c5df;
+
+        }
+
+
+        /* =========================
+           UPLOAD TEXT
+        ========================= */
+
+        .image-help {
+
+            display: block;
+
+            margin-top: 6px;
+
+            color: #8b9da3;
+
+            font-size: 13px;
+
+        }

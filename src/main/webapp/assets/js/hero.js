@@ -86,3 +86,31 @@ camera.updateProjectionMatrix();
 renderer.setSize(container.clientWidth,container.clientHeight);
 
 });
+
+const visual = document.querySelector(".hero-visual");
+
+if (visual) {
+
+    let rotation = 0;
+
+    function animateHero() {
+
+        rotation += 0.15;
+
+        const tooth =
+            document.querySelector(".hero-tooth");
+
+        if (tooth) {
+
+            tooth.style.transform =
+                `translateY(${Math.sin(rotation / 18) * 8}px)
+                 rotate(${Math.sin(rotation / 35) * 2}deg)`;
+
+        }
+
+        requestAnimationFrame(animateHero);
+
+    }
+
+    animateHero();
+}
