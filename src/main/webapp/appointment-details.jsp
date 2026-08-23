@@ -133,23 +133,34 @@ Cancelled
 
 <div class="mt-4">
 
-<a href="appointments.jsp"
-class="btn btn-secondary">
+    <!-- BACK BUTTON -->
+    <a href="appointments.jsp"
+       class="btn btn-secondary">
 
-<i class="bi bi-arrow-left"></i>
+        <i class="bi bi-arrow-left"></i>
+        Back
 
-Back
+    </a>
 
-</a>
 
-<a href="edit-appointment.jsp?id=<%=appointment.getAppointmentId()%>"
-class="btn btn-warning">
+    <!-- EDIT BUTTON -->
+    <a href="edit-appointment.jsp?id=<%=appointment.getAppointmentId()%>"
+       class="btn btn-warning">
 
-<i class="bi bi-pencil-square"></i>
+        <i class="bi bi-pencil-square"></i>
+        Edit
 
-Edit
+    </a>
 
-</a>
+
+    <!-- GENERATE BILL BUTTON -->
+    <a href="GenerateBillServlet?appointmentId=<%=appointment.getAppointmentId()%>"
+       class="btn btn-success">
+
+        <i class="bi bi-receipt"></i>
+        Generate Bill
+
+    </a>
 
 </div>
 

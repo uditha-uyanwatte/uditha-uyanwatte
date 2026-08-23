@@ -65,7 +65,17 @@
             </a>
         </li>
         
-        
+        <li class="nav-item">
+
+    <a href="services.jsp" class="nav-link">
+
+        <i class="bi bi-heart-pulse-fill"></i>
+
+        <span>Services</span>
+
+    </a>
+
+</li>
 
         <li class="nav-item">
             <a href="billing.jsp" class="nav-link">
