@@ -2,47 +2,47 @@ package controller;
 
 import java.io.IOException;
 
-import dao.BillingDAO;
-import jakarta.servlet.ServletException;
+import dao.ServiceDAO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/DeleteBillingServlet")
-public class DeleteBillingServlet extends HttpServlet {
+@WebServlet("/DeleteServiceServlet")
+public class DeleteServiceServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private BillingDAO dao = new BillingDAO();
+    private final ServiceDAO dao = new ServiceDAO();
 
     @Override
     protected void doGet(
             HttpServletRequest request,
             HttpServletResponse response
-    ) throws ServletException, IOException {
+    ) throws IOException {
 
         try {
 
-            int id = Integer.parseInt(
-                    request.getParameter("id")
-            );
+            int id =
+                    Integer.parseInt(
+                            request.getParameter("id")
+                    );
 
-            boolean deleted =
-                    dao.deleteBill(id);
+            boolean status =
+                    dao.deleteService(id);
 
-            if (deleted) {
+
+            if (status) {
 
                 response.sendRedirect(
-                        "billing.jsp?deleted=1"
+                        "services.jsp?deleted=1"
                 );
 
             } else {
 
                 response.sendRedirect(
-                        "billing.jsp?error=delete"
+                        "services.jsp?error=delete"
                 );
-
             }
 
         } catch (Exception e) {
@@ -50,7 +50,7 @@ public class DeleteBillingServlet extends HttpServlet {
             e.printStackTrace();
 
             response.sendRedirect(
-                    "billing.jsp?error=delete"
+                    "services.jsp?error=delete"
             );
         }
     }

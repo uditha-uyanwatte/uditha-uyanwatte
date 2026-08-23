@@ -5,12 +5,14 @@ import java.util.List;
 
 import dao.AppointmentDAO;
 import dao.DentistDAO;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import model.Appointment;
 import model.Dentist;
 import model.User;
@@ -35,12 +37,9 @@ public class DentistDashboardServlet extends HttpServlet {
         HttpSession session =
                 request.getSession(false);
 
-        // =========================
         // LOGIN CHECK
-        // =========================
-
         if (session == null ||
-            session.getAttribute("user") == null) {
+                session.getAttribute("user") == null) {
 
             response.sendRedirect("login.jsp");
             return;
@@ -49,11 +48,7 @@ public class DentistDashboardServlet extends HttpServlet {
         User user =
                 (User) session.getAttribute("user");
 
-
-        // =========================
         // DENTIST ROLE CHECK
-        // =========================
-
         if (!"DENTIST".equalsIgnoreCase(
                 user.getRole())) {
 
@@ -61,9 +56,8 @@ public class DentistDashboardServlet extends HttpServlet {
             return;
         }
 
-
         // =========================
-        // FIND DENTIST
+        // FIND DENTIST PROFILE
         // =========================
 
         Dentist dentist =
@@ -71,33 +65,111 @@ public class DentistDashboardServlet extends HttpServlet {
                         user.getId()
                 );
 
+        // =========================
+        // AUTO CREATE PROFILE
+        // =========================
+
         if (dentist == null) {
 
-            request.setAttribute(
-                    "error",
-                    "Dentist profile not found."
+            Dentist newDentist =
+                    new Dentist();
+
+            newDentist.setUserId(
+                    user.getId()
             );
 
-            request.getRequestDispatcher(
-                    "login.jsp"
-            ).forward(
-                    request,
-                    response
+            /*
+             * Registered user's full name
+             */
+            String fullName =
+                    user.getFullName();
+
+            String firstName = fullName;
+            String lastName = "";
+
+            if (fullName != null &&
+                    fullName.trim().contains(" ")) {
+
+                String[] nameParts =
+                        fullName.trim().split(
+                                "\\s+",
+                                2
+                        );
+
+                firstName =
+                        nameParts[0];
+
+                lastName =
+                        nameParts[1];
+            }
+
+            newDentist.setFirstName(
+                    firstName
             );
 
-            return;
+            newDentist.setLastName(
+                    lastName
+            );
+
+            /*
+             * Default dentist details
+             */
+            newDentist.setSpecialization(
+                    "General Dentist"
+            );
+
+            newDentist.setPhone(
+                    ""
+            );
+
+            newDentist.setEmail(
+                    user.getUsername()
+            );
+
+            newDentist.setProfileImage(
+                    "doctor-default.jpg"
+            );
+
+            boolean created =
+                    dentistDAO.addDentist(
+                            newDentist
+                    );
+
+            if (!created) {
+
+                request.setAttribute(
+                        "error",
+                        "Unable to create dentist profile."
+                );
+
+                request.getRequestDispatcher(
+                        "login.jsp"
+                ).forward(
+                        request,
+                        response
+                );
+
+                return;
+            }
+
+            /*
+             * Get newly created profile
+             */
+            dentist =
+                    dentistDAO.getDentistByUserId(
+                            user.getId()
+                    );
         }
 
-
         // =========================
-        // GET DENTIST APPOINTMENTS
+        // GET APPOINTMENTS
         // =========================
 
         List<Appointment> appointments =
-                appointmentDAO.getAppointmentsByDentist(
-                        dentist.getDentistId()
-                );
-
+                appointmentDAO
+                        .getAppointmentsByDentist(
+                                dentist.getDentistId()
+                        );
 
         // =========================
         // SEND DATA TO JSP
@@ -112,7 +184,6 @@ public class DentistDashboardServlet extends HttpServlet {
                 "appointments",
                 appointments
         );
-
 
         // =========================
         // OPEN DASHBOARD

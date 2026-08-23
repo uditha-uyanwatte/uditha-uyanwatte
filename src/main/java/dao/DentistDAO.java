@@ -15,54 +15,81 @@ public class DentistDAO {
     // ADD DENTIST
     // =========================================================
 
-    public boolean addDentist(Dentist dentist) {
+	public boolean addDentist(Dentist dentist) {
 
-        boolean status = false;
+	    boolean status = false;
 
-        try {
+	    try {
 
-            Connection con = DBConnection.getConnection();
+	        Connection con = DBConnection.getConnection();
 
-            String sql =
-                    "INSERT INTO dentists " +
-                    "(first_name, last_name, specialization, phone, email, profile_image) " +
-                    "VALUES (?, ?, ?, ?, ?, ?)";
+	        String sql =
+	                "INSERT INTO dentists " +
+	                "(user_id, first_name, last_name, specialization, phone, email, profile_image) " +
+	                "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement ps =
-                    con.prepareStatement(sql);
+	        PreparedStatement ps =
+	                con.prepareStatement(sql);
 
-            ps.setString(1, dentist.getFirstName());
-            ps.setString(2, dentist.getLastName());
-            ps.setString(3, dentist.getSpecialization());
-            ps.setString(4, dentist.getPhone());
-            ps.setString(5, dentist.getEmail());
+	        ps.setInt(
+	                1,
+	                dentist.getUserId()
+	        );
 
-            // Profile image
-            String profileImage =
-                    dentist.getProfileImage();
+	        ps.setString(
+	                2,
+	                dentist.getFirstName()
+	        );
 
-            if (profileImage == null ||
-                    profileImage.trim().isEmpty()) {
+	        ps.setString(
+	                3,
+	                dentist.getLastName()
+	        );
 
-                profileImage = "doctor-default.jpg";
-            }
+	        ps.setString(
+	                4,
+	                dentist.getSpecialization()
+	        );
 
-            ps.setString(6, profileImage);
+	        ps.setString(
+	                5,
+	                dentist.getPhone()
+	        );
 
-            status =
-                    ps.executeUpdate() > 0;
+	        ps.setString(
+	                6,
+	                dentist.getEmail()
+	        );
 
-            ps.close();
-            con.close();
+	        String profileImage =
+	                dentist.getProfileImage();
 
-        } catch (Exception e) {
+	        if (profileImage == null ||
+	                profileImage.trim().isEmpty()) {
 
-            e.printStackTrace();
-        }
+	            profileImage =
+	                    "doctor-default.jpg";
+	        }
 
-        return status;
-    }
+	        ps.setString(
+	                7,
+	                profileImage
+	        );
 
+	        status =
+	                ps.executeUpdate() > 0;
+
+	        ps.close();
+
+	        con.close();
+
+	    } catch (Exception e) {
+
+	        e.printStackTrace();
+	    }
+
+	    return status;
+	}
 
     // =========================================================
     // GET ALL DENTISTS

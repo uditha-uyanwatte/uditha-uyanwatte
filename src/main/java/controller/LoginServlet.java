@@ -33,11 +33,7 @@ public class LoginServlet extends HttpServlet {
         User user =
                 dao.login(username, password);
 
-
-        // =========================
         // LOGIN SUCCESS
-        // =========================
-
         if (user != null) {
 
             HttpSession session =
@@ -63,14 +59,7 @@ public class LoginServlet extends HttpServlet {
                     user.getRole()
             );
 
-
-            // =========================
-            // ROLE REDIRECTION
-            // =========================
-
-            String role =
-                    user.getRole();
-
+            String role = user.getRole();
 
             // ADMIN
             if ("ADMIN".equalsIgnoreCase(role)) {
@@ -78,51 +67,33 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect(
                         "dashboard.jsp"
                 );
-
             }
 
+            // DENTIST
+            else if ("DENTIST".equalsIgnoreCase(role)) {
+
+                response.sendRedirect(
+                        "DentistDashboardServlet"
+                );
+            }
 
             // RECEPTIONIST
-            else if (
-                    "RECEPTIONIST"
-                    .equalsIgnoreCase(role)
-            ) {
+            else if ("RECEPTIONIST"
+                    .equalsIgnoreCase(role)) {
 
                 response.sendRedirect(
                         "receptionist-dashboard.jsp"
                 );
-
             }
 
-
             // PATIENT
-            else if (
-                    "PATIENT"
-                    .equalsIgnoreCase(role)
-            ) {
+            else if ("PATIENT"
+                    .equalsIgnoreCase(role)) {
 
                 response.sendRedirect(
                         "user-dashboard.jsp"
                 );
-
             }
-
-
-            // DENTIST
-            else if (
-                    "DENTIST"
-                    .equalsIgnoreCase(role)
-            ) {
-
-            	response.sendRedirect(
-            	        "DentistDashboardServlet"
-            	);
-
-            }else if ("PATIENT".equalsIgnoreCase(role)) {
-
-                response.sendRedirect("user-dashboard.jsp");
-                }
-
 
             // INVALID ROLE
             else {
@@ -140,14 +111,9 @@ public class LoginServlet extends HttpServlet {
                 );
             }
 
-        }
+        } else {
 
-
-        // =========================
-        // LOGIN FAILED
-        // =========================
-
-        else {
+            // LOGIN FAILED
 
             request.setAttribute(
                     "error",

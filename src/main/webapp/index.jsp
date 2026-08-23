@@ -2,10 +2,17 @@
 <%@ page import="java.util.List" %>
 <%@ page import="dao.DentistDAO" %>
 <%@ page import="model.Dentist" %>
-
+<%@page import="java.util.List"%>
+<%@page import="dao.ServiceDAO"%>
+<%@page import="model.Service"%>
 <%
     DentistDAO dentistDAO = new DentistDAO();
     List<Dentist> dentists = dentistDAO.getAllDentists();
+%>
+
+<%
+    ServiceDAO serviceDAO = new ServiceDAO();
+    List<Service> homeServices = serviceDAO.getAllServices();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -207,7 +214,7 @@
 
                 <div class="hero-actions">
 
-                    <a href="treatments.jsp"
+                    <a href="all-services.jsp"
                        class="hero-primary-btn">
 
                         <i class="bi bi-calendar2-check-fill"></i>
@@ -217,14 +224,14 @@
                     </a>
 
 
-                    <a href="/SunriseDentalClinic/src/main/webapp/appointment-details.jsp"
-                       class="hero-secondary-btn">
+                    <a href="all-services.jsp"
+   class="hero-secondary-btn">
 
-                        Explore Services
+    Explore Services
 
-                        <i class="bi bi-arrow-right"></i>
+    <i class="bi bi-arrow-right"></i>
 
-                    </a>
+</a>
 
                 </div>
 
@@ -332,11 +339,16 @@
                     </div>
 
 
-                    <div class="hero-tooth">
+                  <!-- -- <div class="hero-tooth">
 
                         🦷
 
-                    </div>
+                    </div> ----->
+                    <div class="hero-tooth">
+    <img src="assets/images/3d-tooth.png"
+         alt="3D Dental Tooth"
+         class="hero-tooth-img">
+</div>
 
                 </div>
 
@@ -355,61 +367,36 @@
 <!-- ================= TRUST ================= -->
 
 <section class="trust-strip">
-
     <div class="container">
 
-        <div class="row text-center g-4">
+      <div class="row text-center g-4">
 
-            <div class="col-md-3">
-
-                <i class="bi bi-shield-check"></i>
-
-                <strong>Safe Treatment</strong>
-
-                <span>Modern & hygienic care</span>
-
-            </div>
-
-
-            <div class="col-md-3">
-
-                <i class="bi bi-person-badge"></i>
-
-                <strong>Expert Dentists</strong>
-
-                <span>Qualified professionals</span>
-
-            </div>
-
-
-            <div class="col-md-3">
-
-                <i class="bi bi-cpu"></i>
-
-                <strong>Modern Technology</strong>
-
-                <span>Advanced equipment</span>
-
-            </div>
-
-
-            <div class="col-md-3">
-
-                <i class="bi bi-clock-history"></i>
-
-                <strong>Easy Booking</strong>
-
-                <span>Book appointments easily</span>
-
-            </div>
-
-        </div>
-
+    <div class="col-md-3">
+        <i class="bi bi-shield-check"></i>
+        <strong>Safe Treatment</strong>
+        <span>Modern & hygienic care</span>
     </div>
 
+    <div class="col-md-3">
+        <i class="bi bi-person-badge"></i>
+        <strong>Expert Dentists</strong>
+        <span>Qualified professionals</span>
+    </div>
+
+    <div class="col-md-3">
+        <i class="bi bi-cpu"></i>
+        <strong>Modern Technology</strong>
+        <span>Advanced equipment</span>
+    </div>
+
+    <div class="col-md-3">
+        <i class="bi bi-clock-history"></i>
+        <strong>Easy Booking</strong>
+        <span>Book appointments easily</span>
+    </div>
+
+</div>
 </section>
-
-
 <!-- ================= SERVICES ================= -->
 
 <section id="services"
@@ -424,16 +411,12 @@
             <span>OUR SERVICES</span>
 
             <h2>
-
                 Complete Dental Care
-
             </h2>
 
             <p>
-
                 Everything you need for a healthier,
                 brighter and more confident smile.
-
             </p>
 
         </div>
@@ -441,220 +424,197 @@
 
         <div class="row g-4">
 
+            <%
+                if (homeServices != null && !homeServices.isEmpty()) {
 
-            <div class="col-lg-4 col-md-6"
-                 data-aos="fade-up">
+                    int count = 0;
 
-                <div class="modern-service-card">
+                    for (Service service : homeServices) {
 
-                    <div class="service-number">
-                        01
-                    </div>
+                        if (count >= 6) {
+                            break;
+                        }
 
-                    <div class="modern-service-icon">
+                        int delay = (count % 3) * 100;
 
-                        <i class="bi bi-emoji-smile"></i>
-
-                    </div>
-
-                    <h4>
-                        General Dentistry
-                    </h4>
-
-                    <p>
-                        Complete oral checkups,
-                        cleaning and preventive dental care.
-                    </p>
-
-                    <a href="appointment.jsp">
-                        Book Service
-                        <i class="bi bi-arrow-up-right"></i>
-                    </a>
-
-                </div>
-
-            </div>
+                        String number =
+                                String.format("%02d", count + 1);
+            %>
 
 
             <div class="col-lg-4 col-md-6"
                  data-aos="fade-up"
-                 data-aos-delay="100">
+                 data-aos-delay="<%= delay %>">
 
                 <div class="modern-service-card">
 
+                    <!-- SERVICE NUMBER -->
+
                     <div class="service-number">
-                        02
+
+                        <%= number %>
+
                     </div>
+
+
+                    <!-- SERVICE ICON -->
 
                     <div class="modern-service-icon">
 
-                        <i class="bi bi-stars"></i>
+                        <%
+                            String name =
+                                    service.getServiceName()
+                                            .toLowerCase();
+
+                            if (name.contains("white")) {
+                        %>
+
+                            <i class="bi bi-stars"></i>
+
+                        <%
+                            } else if (
+                                    name.contains("root")
+                                    || name.contains("canal")
+                            ) {
+                        %>
+
+                            <i class="bi bi-heart-pulse"></i>
+
+                        <%
+                            } else if (
+                                    name.contains("implant")
+                            ) {
+                        %>
+
+                            <i class="bi bi-gem"></i>
+
+                        <%
+                            } else if (
+                                    name.contains("emergency")
+                            ) {
+                        %>
+
+                            <i class="bi bi-shield-plus"></i>
+
+                        <%
+                            } else if (
+                                    name.contains("ortho")
+                                    || name.contains("brace")
+                            ) {
+                        %>
+
+                            <i class="bi bi-person-check"></i>
+
+                        <%
+                            } else {
+                        %>
+
+                            <i class="bi bi-emoji-smile"></i>
+
+                        <%
+                            }
+                        %>
 
                     </div>
 
+
+                    <!-- SERVICE NAME -->
+
                     <h4>
-                        Teeth Whitening
+
+                        <%= service.getServiceName() %>
+
                     </h4>
 
+
+                    <!-- DESCRIPTION -->
+
                     <p>
-                        Professional whitening treatments
-                        for a brighter and confident smile.
+
+                        <%= service.getDescription() %>
+
                     </p>
 
-                    <a href="patient-appointment.jsp">
-                        Book Service
-                        <i class="bi bi-arrow-up-right"></i>
-                    </a>
+
+                    <!-- SERVICE DETAILS -->
+
+                    <div class="service-home-meta">
+
+                        <span>
+
+                            <i class="bi bi-cash-stack"></i>
+
+                            Rs.
+                            <%= String.format(
+                                    "%,.0f",
+                                    service.getPrice()
+                            ) %>
+
+                        </span>
+
+
+                        <span>
+
+                            <i class="bi bi-clock"></i>
+
+                            <%= service.getDuration() %>
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- BOOK SERVICE -->
+
+ <a href="patient-appointment.jsp?serviceId=<%= service.getServiceId() %>">
+
+    Book Service
+
+    <i class="bi bi-arrow-up-right"></i>
+
+</a>
 
                 </div>
 
             </div>
 
 
-            <div class="col-lg-4 col-md-6"
-                 data-aos="fade-up"
-                 data-aos-delay="200">
+            <%
+                        count++;
+                    }
 
-                <div class="modern-service-card">
+                } else {
+            %>
 
-                    <div class="service-number">
-                        03
-                    </div>
 
-                    <div class="modern-service-icon">
+            <div class="col-12">
 
-                        <i class="bi bi-heart-pulse"></i>
+                <div class="no-services-home text-center">
 
-                    </div>
+                    <i class="bi bi-inbox"></i>
 
                     <h4>
-                        Root Canal
+                        No Services Available
                     </h4>
 
                     <p>
-                        Comfortable and professional
-                        root canal treatment.
+                        Services will be available soon.
                     </p>
-
-                    <a href="patient-appointment.jsp">
-                        Book Service
-                        <i class="bi bi-arrow-up-right"></i>
-                    </a>
 
                 </div>
 
             </div>
 
 
-            <div class="col-lg-4 col-md-6"
-                 data-aos="fade-up">
-
-                <div class="modern-service-card">
-
-                    <div class="service-number">
-                        04
-                    </div>
-
-                    <div class="modern-service-icon">
-
-                        <i class="bi bi-gem"></i>
-
-                    </div>
-
-                    <h4>
-                        Dental Implants
-                    </h4>
-
-                    <p>
-                        Reliable tooth replacement
-                        using modern dental technology.
-                    </p>
-
-                    <a href="patient-appointment.jsp">
-                        Book Service
-                        <i class="bi bi-arrow-up-right"></i>
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-lg-4 col-md-6"
-                 data-aos="fade-up"
-                 data-aos-delay="100">
-
-                <div class="modern-service-card">
-
-                    <div class="service-number">
-                        05
-                    </div>
-
-                    <div class="modern-service-icon">
-
-                        <i class="bi bi-shield-plus"></i>
-
-                    </div>
-
-                    <h4>
-                        Emergency Care
-                    </h4>
-
-                    <p>
-                        Quick support for urgent dental
-                        problems and emergencies.
-                    </p>
-
-                    <a href="patient-appointment.jsp">
-                        Book Service
-                        <i class="bi bi-arrow-up-right"></i>
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <div class="col-lg-4 col-md-6"
-                 data-aos="fade-up"
-                 data-aos-delay="200">
-
-                <div class="modern-service-card">
-
-                    <div class="service-number">
-                        06
-                    </div>
-
-                    <div class="modern-service-icon">
-
-                        <i class="bi bi-person-check"></i>
-
-                    </div>
-
-                    <h4>
-                        Orthodontics
-                    </h4>
-
-                    <p>
-                        Braces and smile correction
-                        for a healthier alignment.
-                    </p>
-
-                    <a href="patient-appointment.jsp">
-                        Book Service
-                        <i class="bi bi-arrow-up-right"></i>
-                    </a>
-
-                </div>
-
-            </div>
+            <%
+                }
+            %>
 
         </div>
 
     </div>
 
 </section>
-
 
 <!-- ================= ABOUT ================= -->
 
