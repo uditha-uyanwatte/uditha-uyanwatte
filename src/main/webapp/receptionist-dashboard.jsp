@@ -207,7 +207,7 @@ body {
 
     </a>
 
-    <a href="appointments.jsp">
+    <a href="ReceptionAppointmentServlet">
 
         <i class="bi bi-calendar-check"></i>
         Appointments
@@ -234,6 +234,14 @@ body {
         Dentists
 
     </a>
+    
+    <a href="search-appointment.jsp">
+
+    <i class="bi bi-search"></i>
+
+    Search Appointment Details
+
+</a>
 
     <a href="receptionBilling.jsp">
 
