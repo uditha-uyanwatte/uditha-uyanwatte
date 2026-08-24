@@ -214,28 +214,28 @@ body {
 
     </a>
 
-    <a href="add-appointment.jsp">
+    <a href="reception-add-appointment.jsp">
 
         <i class="bi bi-calendar-plus"></i>
         Book Appointment
 
     </a>
 
-    <a href="patients.jsp">
+    <a href="receptionPatients.jsp">
 
-        <i class="bi bi-people"></i>
-        Patients
+    <i class="bi bi-people"></i>
+    Patients
 
-    </a>
+</a>
 
-    <a href="dentists.jsp">
+    <a href="receptionDentists.jsp">
 
         <i class="bi bi-person-badge"></i>
         Dentists
 
     </a>
 
-    <a href="billing.jsp">
+    <a href="receptionBilling.jsp">
 
         <i class="bi bi-credit-card"></i>
         Billing
@@ -432,7 +432,7 @@ body {
                 Quick Actions
             </h5>
 
-            <a href="add-appointment.jsp"
+            <a href="reception-add-appointment.jsp"
                class="btn btn-primary me-2">
 
                 <i class="bi bi-calendar-plus"></i>
@@ -448,7 +448,7 @@ body {
 
             </a>
 
-            <a href="billing.jsp"
+            <a href="receptionBilling.jsp"
                class="btn btn-outline-success">
 
                 <i class="bi bi-receipt"></i>
