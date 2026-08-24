@@ -1,17 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ page import="dao.BillingDAO"%>
+<%@ page import="model.Billing"%>
 <%@ page import="java.util.List"%>
-<%@ page import="model.Appointment"%>
 
 <%
+    // Login check
     if (session.getAttribute("username") == null) {
         response.sendRedirect("login.jsp");
         return;
     }
 
-    List<Appointment> appointments =
-        (List<Appointment>) request.getAttribute("appointments");
+    // Get all billing records
+    BillingDAO billingDAO = new BillingDAO();
+    List<Billing> bills = billingDAO.getAllBills();
 %>
 
 <!DOCTYPE html>
@@ -24,7 +27,7 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1">
 
-<title>Reception Appointments</title>
+<title>Reception Billing</title>
 
 <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -58,7 +61,7 @@ body {
 }
 
 .status {
-    padding: 5px 12px;
+    padding: 6px 12px;
     border-radius: 20px;
     font-size: 13px;
     font-weight: bold;
@@ -66,19 +69,15 @@ body {
     display: inline-block;
 }
 
+.Paid {
+    background: #198754;
+}
+
 .Pending {
     background: #f0ad00;
 }
 
-.Confirmed {
-    background: #0d6efd;
-}
-
-.Completed {
-    background: #198754;
-}
-
-.Cancelled {
+.Unpaid {
     background: #dc3545;
 }
 
@@ -92,17 +91,19 @@ body {
 
     <div class="container-box">
 
-        <!-- PAGE HEADER -->
+        <!-- HEADER -->
 
         <div class="page-header">
 
             <h2 class="mb-1">
-                <i class="bi bi-calendar-check"></i>
-                Appointments
+
+                <i class="bi bi-receipt"></i>
+                Billing & Payments
+
             </h2>
 
             <p class="mb-0">
-                Manage and view patient appointments
+                View and manage patient billing information
             </p>
 
         </div>
@@ -120,41 +121,38 @@ body {
 
             </a>
 
-            <a href="AddAppointmentServlet"
+            <a href="reception-add-billing.jsp"
                class="btn btn-primary">
 
-                <i class="bi bi-calendar-plus"></i>
-                Book Appointment
+                <i class="bi bi-plus-circle"></i>
+                Create Bill
 
             </a>
 
         </div>
 
 
-        <!-- APPOINTMENT TABLE -->
+        <!-- BILLING TABLE -->
 
         <div class="table-responsive">
 
-            <table
-                class="table table-hover table-bordered align-middle">
+            <table class="table table-hover table-bordered align-middle">
 
                 <thead class="table-dark">
 
                     <tr>
 
-                        <th>ID</th>
+                        <th>Bill ID</th>
 
                         <th>Patient</th>
 
-                        <th>Dentist</th>
+                        <th>Treatment</th>
 
-                        <th>Date</th>
+                        <th>Amount</th>
 
-                        <th>Time</th>
+                        <th>Payment Status</th>
 
-                        <th>Status</th>
-
-                        <th>Actions</th>
+                        <th>Payment Date</th>
 
                     </tr>
 
@@ -163,100 +161,48 @@ body {
                 <tbody>
 
                 <%
-                    if (appointments != null &&
-                        !appointments.isEmpty()) {
+                    if (bills != null && !bills.isEmpty()) {
 
-                        for (Appointment appointment :
-                                appointments) {
+                        for (Billing bill : bills) {
                 %>
 
                     <tr>
 
                         <td>
-
-                            #<%= appointment.getAppointmentId() %>
-
+                            #<%= bill.getBillId() %>
                         </td>
 
-
-                        <!-- PATIENT -->
-
                         <td>
-
-                            <%= appointment.getPatientName() != null
-                                ? appointment.getPatientName()
+                            <%= bill.getPatientName() != null
+                                ? bill.getPatientName()
                                 : "N/A" %>
-
                         </td>
 
-
-                        <!-- DENTIST -->
-
                         <td>
-
-                            <%= appointment.getDentistName() != null
-                                ? appointment.getDentistName()
+                            <%= bill.getTreatmentName() != null
+                                ? bill.getTreatmentName()
                                 : "N/A" %>
-
                         </td>
-
-
-                        <!-- DATE -->
 
                         <td>
-
-                            <%= appointment.getAppointmentDate() %>
-
+                            Rs. <%= String.format("%.2f", bill.getAmount()) %>
                         </td>
-
-
-                        <!-- TIME -->
-
-                        <td>
-
-                            <%= appointment.getAppointmentTime() %>
-
-                        </td>
-
-
-                        <!-- STATUS -->
 
                         <td>
 
                             <span class="status
-                                <%= appointment.getStatus() %>">
+                                <%= bill.getPaymentStatus() %>">
 
-                                <%= appointment.getStatus() %>
+                                <%= bill.getPaymentStatus() %>
 
                             </span>
 
                         </td>
 
-
-                        <!-- ACTIONS -->
-
                         <td>
-
-                            <!-- VIEW -->
-
-                            <a href="appointment-details.jsp?id=<%= appointment.getAppointmentId() %>"
-                               class="btn btn-sm btn-info text-white">
-
-                                <i class="bi bi-eye"></i>
-                                View
-
-                            </a>
-
-
-                            <!-- EDIT -->
-
-                       <a href="reception-edit-appointment.jsp?id=<%= appointment.getAppointmentId() %>"
-   class="btn btn-sm btn-warning">
-
-    <i class="bi bi-pencil-square"></i>
-    Edit
-
-</a>
+                            <%= bill.getPaymentDate() != null
+                                ? bill.getPaymentDate()
+                                : "N/A" %>
                         </td>
 
                     </tr>
@@ -269,12 +215,12 @@ body {
 
                     <tr>
 
-                        <td colspan="7"
+                        <td colspan="6"
                             class="text-center text-muted">
 
-                            <i class="bi bi-calendar-x"></i>
+                            <i class="bi bi-receipt-cutoff"></i>
 
-                            No appointments found.
+                            No billing records found.
 
                         </td>
 
