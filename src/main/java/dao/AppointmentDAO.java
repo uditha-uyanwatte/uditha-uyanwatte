@@ -190,47 +190,113 @@ public class AppointmentDAO {
          return list;
      }
 
-    // Get Appointment By ID
-    public Appointment getAppointmentById(int id) {
+  // =====================================
+  // GET FULL APPOINTMENT DETAILS BY ID
+  // =====================================
 
-        Appointment appointment = null;
+  public Appointment getAppointmentById(int id) {
 
-        try {
+      Appointment appointment = null;
 
-            Connection con = DBConnection.getConnection();
+      try {
 
-            String sql = "SELECT * FROM appointments WHERE appointment_id=?";
+          Connection con =
+                  DBConnection.getConnection();
 
-            PreparedStatement ps = con.prepareStatement(sql);
+          String sql =
+                  "SELECT a.*, " +
+                  "CONCAT(p.first_name, ' ', p.last_name) " +
+                  "AS patient_name, " +
+                  "p.phone AS patient_phone, " +
+                  "p.email AS patient_email, " +
+                  "CONCAT(d.first_name, ' ', d.last_name) " +
+                  "AS dentist_name, " +
+                  "d.specialization AS dentist_specialization " +
+                  "FROM appointments a " +
+                  "LEFT JOIN patients p " +
+                  "ON a.patient_id = p.patient_id " +
+                  "LEFT JOIN dentists d " +
+                  "ON a.dentist_id = d.dentist_id " +
+                  "WHERE a.appointment_id = ?";
 
-            ps.setInt(1, id);
+          PreparedStatement ps =
+                  con.prepareStatement(sql);
 
-            ResultSet rs = ps.executeQuery();
+          ps.setInt(1, id);
 
-            if (rs.next()) {
+          ResultSet rs =
+                  ps.executeQuery();
 
-                appointment = new Appointment();
+          if (rs.next()) {
 
-                appointment.setAppointmentId(rs.getInt("appointment_id"));
-                appointment.setPatientId(rs.getInt("patient_id"));
-                appointment.setDentistId(rs.getInt("dentist_id"));
-                appointment.setAppointmentDate(rs.getString("appointment_date"));
-                appointment.setAppointmentTime(rs.getString("appointment_time"));
-                appointment.setStatus(rs.getString("status"));
-                appointment.setTreatment(rs.getString("treatment"));
-                appointment.setNotes(rs.getString("notes"));
-            }
+              appointment =
+                      new Appointment();
 
-            rs.close();
-            ps.close();
-            con.close();
+              appointment.setAppointmentId(
+                      rs.getInt("appointment_id")
+              );
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+              appointment.setPatientId(
+                      rs.getInt("patient_id")
+              );
 
-        return appointment;
-    }
+              appointment.setDentistId(
+                      rs.getInt("dentist_id")
+              );
+
+              appointment.setAppointmentDate(
+                      rs.getString("appointment_date")
+              );
+
+              appointment.setAppointmentTime(
+                      rs.getString("appointment_time")
+              );
+
+              appointment.setStatus(
+                      rs.getString("status")
+              );
+
+              appointment.setTreatment(
+                      rs.getString("treatment")
+              );
+
+              appointment.setNotes(
+                      rs.getString("notes")
+              );
+
+              appointment.setPatientName(
+                      rs.getString("patient_name")
+              );
+
+              appointment.setDentistName(
+                      rs.getString("dentist_name")
+                      
+              );
+              
+              appointment.setPatientPhone(
+            	        rs.getString("patient_phone")
+            	);
+
+            	appointment.setPatientEmail(
+            	        rs.getString("patient_email")
+            	);
+
+            	appointment.setDentistSpecialization(
+            	        rs.getString("dentist_specialization")
+            	);
+          }
+
+          rs.close();
+          ps.close();
+          con.close();
+
+      } catch (Exception e) {
+
+          e.printStackTrace();
+      }
+
+      return appointment;
+  }
 
     // Update Appointment
     public boolean updateAppointment(Appointment appointment) {
