@@ -3,6 +3,30 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.Billing" %>
 
+
+<%
+String paid = request.getParameter("paid");
+String error = request.getParameter("error");
+
+if ("1".equals(paid)) {
+%>
+
+<div class="alert alert-success">
+    Payment completed successfully!
+</div>
+
+<%
+} else if ("payment".equals(error)) {
+%>
+
+<div class="alert alert-danger">
+    Payment failed!
+</div>
+
+<%
+}
+%>
+
 <%
 
     if (session.getAttribute("user") == null) {
