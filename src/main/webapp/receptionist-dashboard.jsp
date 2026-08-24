@@ -241,6 +241,11 @@ body {
         Billing
 
     </a>
+    
+    <a href="help.jsp" >
+   <i class="bi bi-credit-card"></i>
+    Help & Support
+</a>
 
     <hr>
 
