@@ -3,8 +3,10 @@ package controller;
 import java.io.IOException;
 
 import dao.AppointmentDAO;
-import dao.PatientDAO;
+import dao.BillingDAO;
 import dao.DentistDAO;
+import dao.PatientDAO;
+import dao.TreatmentDAO;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,14 +16,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import model.Appointment;
-import model.Patient;
+import model.Billing;
 import model.Dentist;
+import model.Patient;
+import model.Treatment;
 import model.User;
 
 @WebServlet("/ReceptionAddAppointmentServlet")
 public class ReceptionAddAppointmentServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+
 
     private AppointmentDAO appointmentDAO =
             new AppointmentDAO();
@@ -32,6 +37,12 @@ public class ReceptionAddAppointmentServlet extends HttpServlet {
     private DentistDAO dentistDAO =
             new DentistDAO();
 
+    private TreatmentDAO treatmentDAO =
+            new TreatmentDAO();
+
+    private BillingDAO billingDAO =
+            new BillingDAO();
+
 
     @Override
     protected void doPost(
@@ -41,9 +52,9 @@ public class ReceptionAddAppointmentServlet extends HttpServlet {
 
         try {
 
-            // =========================
+            // =========================================
             // LOGIN CHECK
-            // =========================
+            // =========================================
 
             HttpSession session =
                     request.getSession(false);
@@ -52,6 +63,7 @@ public class ReceptionAddAppointmentServlet extends HttpServlet {
                     session.getAttribute("user") == null) {
 
                 response.sendRedirect("login.jsp");
+
                 return;
             }
 
@@ -60,21 +72,22 @@ public class ReceptionAddAppointmentServlet extends HttpServlet {
                     (User) session.getAttribute("user");
 
 
-            // =========================
+            // =========================================
             // RECEPTIONIST CHECK
-            // =========================
+            // =========================================
 
             if (!"RECEPTIONIST".equalsIgnoreCase(
                     loggedUser.getRole())) {
 
                 response.sendRedirect("login.jsp");
+
                 return;
             }
 
 
-            // =========================
+            // =========================================
             // GET FORM DATA
-            // =========================
+            // =========================================
 
             String patientParam =
                     request.getParameter("patientId");
@@ -82,8 +95,14 @@ public class ReceptionAddAppointmentServlet extends HttpServlet {
             String dentistParam =
                     request.getParameter("dentistId");
 
+            String treatmentIdParam =
+                    request.getParameter("treatmentId");
+
             String treatment =
                     request.getParameter("treatment");
+
+            String amountParam =
+                    request.getParameter("amount");
 
             String appointmentDate =
                     request.getParameter("appointmentDate");
@@ -98,20 +117,24 @@ public class ReceptionAddAppointmentServlet extends HttpServlet {
                     request.getParameter("notes");
 
 
-            // =========================
+            // =========================================
             // VALIDATION
-            // =========================
+            // =========================================
 
             if (patientParam == null ||
                     dentistParam == null ||
+                    treatmentIdParam == null ||
                     treatment == null ||
+                    amountParam == null ||
                     appointmentDate == null ||
                     appointmentTime == null ||
                     status == null ||
 
                     patientParam.isEmpty() ||
                     dentistParam.isEmpty() ||
+                    treatmentIdParam.isEmpty() ||
                     treatment.trim().isEmpty() ||
+                    amountParam.isEmpty() ||
                     appointmentDate.isEmpty() ||
                     appointmentTime.isEmpty() ||
                     status.isEmpty()) {
@@ -130,10 +153,30 @@ public class ReceptionAddAppointmentServlet extends HttpServlet {
             int dentistId =
                     Integer.parseInt(dentistParam);
 
+            int treatmentId =
+                    Integer.parseInt(treatmentIdParam);
 
-            // =========================
+            double amount =
+                    Double.parseDouble(amountParam);
+
+
+            // =========================================
+            // AMOUNT VALIDATION
+            // =========================================
+
+            if (amount <= 0) {
+
+                response.sendRedirect(
+                        "reception-add-appointment.jsp?error=amount"
+                );
+
+                return;
+            }
+
+
+            // =========================================
             // CHECK PATIENT
-            // =========================
+            // =========================================
 
             Patient patient =
                     patientDAO.getPatientById(patientId);
@@ -148,9 +191,9 @@ public class ReceptionAddAppointmentServlet extends HttpServlet {
             }
 
 
-            // =========================
+            // =========================================
             // CHECK DENTIST
-            // =========================
+            // =========================================
 
             Dentist dentist =
                     dentistDAO.getDentistById(dentistId);
@@ -165,9 +208,37 @@ public class ReceptionAddAppointmentServlet extends HttpServlet {
             }
 
 
-            // =========================
+            // =========================================
+            // CHECK TREATMENT
+            // =========================================
+
+            Treatment selectedTreatment =
+                    treatmentDAO.getTreatmentById(
+                            treatmentId
+                    );
+
+            if (selectedTreatment == null) {
+
+                response.sendRedirect(
+                        "reception-add-appointment.jsp?error=treatment"
+                );
+
+                return;
+            }
+
+
+            // =========================================
+            // USE DATABASE TREATMENT NAME
+            // =========================================
+
+            treatment =
+                    selectedTreatment
+                            .getTreatmentName();
+
+
+            // =========================================
             // CHECK BOOKED SLOT
-            // =========================
+            // =========================================
 
             boolean alreadyBooked =
                     appointmentDAO.isAppointmentSlotBooked(
@@ -186,9 +257,9 @@ public class ReceptionAddAppointmentServlet extends HttpServlet {
             }
 
 
-            // =========================
+            // =========================================
             // CREATE APPOINTMENT
-            // =========================
+            // =========================================
 
             Appointment appointment =
                     new Appointment();
@@ -214,35 +285,111 @@ public class ReceptionAddAppointmentServlet extends HttpServlet {
             );
 
             appointment.setNotes(
-                    notes != null ? notes.trim() : ""
+                    notes != null
+                            ? notes.trim()
+                            : ""
             );
 
 
-            // =========================
+            // =========================================
             // SAVE APPOINTMENT
-            // =========================
+            // =========================================
 
-            boolean success =
+            boolean appointmentSuccess =
                     appointmentDAO.addAppointment(
                             appointment
                     );
 
 
-            // =========================
-            // RESULT
-            // =========================
-
-            if (success) {
+            if (!appointmentSuccess) {
 
                 response.sendRedirect(
-                        "ReceptionAppointmentServlet?success=1"
+                        "reception-add-appointment.jsp?error=failed"
+                );
+
+                return;
+            }
+
+
+            // =========================================
+            // GET NEWLY CREATED APPOINTMENT
+            // =========================================
+            //
+            // IMPORTANT:
+            // Your AppointmentDAO should set the
+            // generated appointment ID into the object.
+            //
+            // After addAppointment(), we use:
+            //
+            // appointment.getAppointmentId()
+            //
+            // =========================================
+
+            int appointmentId =
+                    appointment.getAppointmentId();
+
+
+            // =========================================
+            // CREATE BILL AUTOMATICALLY
+            // =========================================
+
+            Billing bill =
+                    new Billing();
+
+            bill.setAppointmentId(
+                    appointmentId
+            );
+
+            bill.setPatientId(
+                    patientId
+            );
+
+            bill.setTreatmentId(
+                    treatmentId
+            );
+
+            // Use treatment price from database
+            // instead of trusting hidden form value
+
+            bill.setAmount(
+                    selectedTreatment.getCost()
+            );
+
+            bill.setPaymentStatus(
+                    "Pending"
+            );
+
+            bill.setPaymentDate(
+                    appointmentDate
+            );
+
+
+            // =========================================
+            // SAVE BILL
+            // =========================================
+
+            boolean billingSuccess =
+                    billingDAO.addBill(
+                            bill
+                    );
+
+
+            // =========================================
+            // RESULT
+            // =========================================
+
+            if (billingSuccess) {
+
+                response.sendRedirect(
+                        "receptionBilling.jsp?success=appointment_bill_created"
                 );
 
             } else {
 
                 response.sendRedirect(
-                        "reception-add-appointment.jsp?error=failed"
+                        "receptionBilling.jsp?warning=appointment_created_bill_failed"
                 );
+
             }
 
 
@@ -261,6 +408,9 @@ public class ReceptionAddAppointmentServlet extends HttpServlet {
             response.sendRedirect(
                     "reception-add-appointment.jsp?error=failed"
             );
+
         }
+
     }
+
 }
