@@ -101,6 +101,8 @@ public class PayBillServlet extends HttpServlet {
                         userId
                 );
 
+        
+        
 
         // =========================
         // PAY BILL
@@ -124,6 +126,21 @@ public class PayBillServlet extends HttpServlet {
             response.sendRedirect(
                     "PatientBillingServlet?error=payment"
             );
+            
+            if (success) {
+
+                response.sendRedirect(
+                    "PatientBillingServlet?paid=1"
+                );
+
+            } else {
+
+                response.sendRedirect(
+                    "PatientBillingServlet?error=payment"
+                );
+            }
+            
         }
     }
+    
 }

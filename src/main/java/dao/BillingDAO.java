@@ -661,4 +661,92 @@ public boolean updateBill(Billing bill) {
 
  return status;
 }
+
+
+public Billing getBillByIdAndPatient(int billId, int patientId) {
+
+    Billing bill = null;
+
+    try {
+        Connection con = DBConnection.getConnection();
+
+        String sql =
+                "SELECT b.*, p.first_name, p.last_name, " +
+                "t.treatment_name " +
+                "FROM billing b " +
+                "JOIN patients p ON b.patient_id = p.patient_id " +
+                "JOIN treatments t ON b.treatment_id = t.treatment_id " +
+                "WHERE b.bill_id=? AND b.patient_id=?";
+
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setInt(1, billId);
+        ps.setInt(2, patientId);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+
+            bill = new Billing();
+
+            bill.setBillId(rs.getInt("bill_id"));
+            bill.setPatientId(rs.getInt("patient_id"));
+            bill.setTreatmentId(rs.getInt("treatment_id"));
+            bill.setAmount(rs.getDouble("amount"));
+            bill.setPaymentStatus(rs.getString("payment_status"));
+            bill.setPaymentDate(rs.getString("payment_date"));
+
+            bill.setPatientName(
+                    rs.getString("first_name")
+                    + " "
+                    + rs.getString("last_name")
+            );
+
+            bill.setTreatmentName(
+                    rs.getString("treatment_name")
+            );
+        }
+
+        rs.close();
+        ps.close();
+        con.close();
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return bill;
+}
+
+public boolean payBill(int billId, int patientId) {
+
+    boolean success = false;
+
+    try {
+
+        Connection con = DBConnection.getConnection();
+
+        String sql = "UPDATE billing SET payment_status = 'Paid' "
+                + "WHERE bill_id = ? AND patient_id = ?";
+
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setInt(1, billId);
+        ps.setInt(2, patientId);
+
+        int rows = ps.executeUpdate();
+
+        success = rows > 0;
+
+        ps.close();
+        con.close();
+
+    } catch (Exception e) {
+
+        e.printStackTrace();
+
+    }
+
+    return success;
+}
 }
