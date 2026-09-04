@@ -1,26 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%@ page import="dao.AppointmentDAO" %>
 <%@ page import="dao.PatientDAO" %>
-<%@ page import="dao.DentistDAO" %>
 <%@ page import="java.util.List" %>
-<%@ page import="model.Appointment" %>
 <%@ page import="model.Patient" %>
-<%@ page import="model.Dentist" %>
 
 <%
-    // =========================
     // LOGIN CHECK
-    // =========================
     if (session.getAttribute("user") == null) {
         response.sendRedirect("login.jsp");
         return;
     }
 
-    // =========================
     // RECEPTIONIST ROLE CHECK
-    // =========================
     String role = (String) session.getAttribute("role");
 
     if (!"RECEPTIONIST".equalsIgnoreCase(role)) {
@@ -28,71 +20,22 @@
         return;
     }
 
-    // =========================
-    // DAO OBJECTS
-    // =========================
-    AppointmentDAO appointmentDAO = new AppointmentDAO();
+    // GET ALL PATIENTS
     PatientDAO patientDAO = new PatientDAO();
-    DentistDAO dentistDAO = new DentistDAO();
+    List<Patient> patients = patientDAO.getAllPatients();
 
-    // =========================
-    // GET DATA
-    // =========================
-    List<Appointment> appointments =
-            appointmentDAO.getAllAppointments();
-
-    List<Patient> patients =
-            patientDAO.getAllPatients();
-
-    List<Dentist> dentists =
-            dentistDAO.getAllDentists();
-
-    // =========================
-    // STATISTICS
-    // =========================
-    int totalAppointments = appointments.size();
-
-    int pendingAppointments = 0;
-
-    int completedAppointments = 0;
-
-    for (Appointment appointment : appointments) {
-
-        if ("Pending".equalsIgnoreCase(
-                appointment.getStatus())) {
-
-            pendingAppointments++;
-
-        } else if ("Completed".equalsIgnoreCase(
-                appointment.getStatus())) {
-
-            completedAppointments++;
-        }
-    }
-
-    int totalPatients = patients.size();
-    int totalDentists = dentists.size();
-
-    String fullName =
-            (String) session.getAttribute("fullName");
-
-    if (fullName == null) {
-        fullName = "Receptionist";
-    }
+    String message = request.getParameter("message");
+    String error = request.getParameter("error");
 %>
 
 <!DOCTYPE html>
-
 <html>
-
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1">
-
-<title>Receptionist Dashboard</title>
+<title>Patient Management - Sunrise Dental Clinic</title>
 
 <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -105,11 +48,13 @@
 <style>
 
 body {
-    background: #f4f7fb;
+    background-color: #f4f7fb;
     font-family: Arial, sans-serif;
 }
 
-/* SIDEBAR */
+/* =========================
+   SIDEBAR
+========================= */
 
 .sidebar {
     min-height: 100vh;
@@ -121,6 +66,7 @@ body {
 .sidebar h3 {
     text-align: center;
     margin-bottom: 35px;
+    font-weight: bold;
 }
 
 .sidebar a {
@@ -139,43 +85,40 @@ body {
     color: white;
 }
 
+/* =========================
+   MAIN CONTENT
+========================= */
+
 .main-content {
     padding: 30px;
 }
 
-/* HEADER */
-
-.dashboard-header {
-    margin-bottom: 30px;
-}
-
-.dashboard-header h2 {
+.page-title {
     font-weight: bold;
     color: #12304a;
 }
 
-/* STAT CARDS */
-
-.stat-card {
+.management-card {
     border: none;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    transition: 0.3s;
 }
 
-.stat-card:hover {
-    transform: translateY(-5px);
-}
-
-.stat-icon {
-    font-size: 35px;
-}
-
-/* TABLE */
-
-.dashboard-table {
+.table-card {
+    border: none;
     border-radius: 15px;
     overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.table thead th {
+    background: #12304a;
+    color: white;
+}
+
+.add-btn {
+    border-radius: 8px;
+    padding: 10px 18px;
 }
 
 </style>
@@ -196,72 +139,54 @@ body {
 
     <h3>
         <i class="bi bi-heart-pulse"></i>
-        Sunrise
+        Sunrise Dental
     </h3>
 
-    <a href="receptionist-dashboard.jsp"
-       class="active">
-
+    <a href="receptionist-dashboard.jsp">
         <i class="bi bi-grid"></i>
         Dashboard
-
     </a>
 
     <a href="ReceptionAppointmentServlet">
-
         <i class="bi bi-calendar-check"></i>
         Appointments
-
     </a>
 
     <a href="reception-add-appointment.jsp">
-
         <i class="bi bi-calendar-plus"></i>
         Book Appointment
-
     </a>
 
-    <a href="receptionPatients.jsp">
-
-    <i class="bi bi-people"></i>
-    Patients
-
-</a>
+    <a href="receptionPatients.jsp" class="active">
+        <i class="bi bi-people"></i>
+        Patients
+    </a>
 
     <a href="receptionDentists.jsp">
-
         <i class="bi bi-person-badge"></i>
         Dentists
-
     </a>
-    
+
     <a href="search-appointment.jsp">
-
-    <i class="bi bi-search"></i>
-
-    Search Appointment Details
-
-</a>
+        <i class="bi bi-search"></i>
+        Search Appointment Details
+    </a>
 
     <a href="receptionBilling.jsp">
-
         <i class="bi bi-credit-card"></i>
         Billing
-
     </a>
-    
-    <a href="help.jsp" >
-   <i class="bi bi-credit-card"></i>
-    Help & Support
-</a>
+
+    <a href="help.jsp">
+        <i class="bi bi-question-circle"></i>
+        Help & Support
+    </a>
 
     <hr>
 
     <a href="LogoutServlet">
-
         <i class="bi bi-box-arrow-right"></i>
         Logout
-
     </a>
 
 </div>
@@ -273,318 +198,258 @@ body {
 
 <div class="col-md-9 col-lg-10 main-content">
 
-    <!-- HEADER -->
 
-    <div class="dashboard-header">
+    <!-- PAGE HEADER -->
 
-        <h2>
-            Welcome,
-            <%= fullName %> 👋
-        </h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <p class="text-muted">
-            Receptionist Dashboard Overview
-        </p>
+        <div>
+
+            <h2 class="page-title">
+
+                <i class="bi bi-people-fill"></i>
+                Patient Management
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Register and manage patient information
+
+            </p>
+
+        </div>
+
+
+        <button
+            class="btn btn-primary add-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#addPatientModal">
+
+            <i class="bi bi-person-plus-fill"></i>
+            Add New Patient
+
+        </button>
 
     </div>
 
 
-    <!-- =========================
-         STATISTICS
-    ========================= -->
+    <!-- SUCCESS MESSAGE -->
 
-    <div class="row g-4 mb-4">
+    <% if (message != null && !message.trim().isEmpty()) { %>
 
+        <div class="alert alert-success alert-dismissible fade show">
 
-        <!-- TOTAL APPOINTMENTS -->
+            <i class="bi bi-check-circle-fill"></i>
 
-        <div class="col-md-6 col-xl-3">
+            <%= message %>
 
-            <div class="card stat-card p-3">
-
-                <div class="d-flex
-                            justify-content-between
-                            align-items-center">
-
-                    <div>
-
-                        <small class="text-muted">
-                            Total Appointments
-                        </small>
-
-                        <h3 class="mt-2">
-                            <%= totalAppointments %>
-                        </h3>
-
-                    </div>
-
-                    <i class="bi bi-calendar-check
-                              text-primary
-                              stat-icon"></i>
-
-                </div>
-
-            </div>
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+            </button>
 
         </div>
 
+    <% } %>
 
-        <!-- PENDING -->
 
-        <div class="col-md-6 col-xl-3">
+    <!-- ERROR MESSAGE -->
 
-            <div class="card stat-card p-3">
+    <% if (error != null && !error.trim().isEmpty()) { %>
 
-                <div class="d-flex
-                            justify-content-between
-                            align-items-center">
+        <div class="alert alert-danger alert-dismissible fade show">
 
-                    <div>
+            <i class="bi bi-exclamation-triangle-fill"></i>
 
-                        <small class="text-muted">
-                            Pending
-                        </small>
+            <%= error %>
 
-                        <h3 class="mt-2">
-                            <%= pendingAppointments %>
-                        </h3>
-
-                    </div>
-
-                    <i class="bi bi-hourglass-split
-                              text-warning
-                              stat-icon"></i>
-
-                </div>
-
-            </div>
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+            </button>
 
         </div>
 
-
-        <!-- COMPLETED -->
-
-        <div class="col-md-6 col-xl-3">
-
-            <div class="card stat-card p-3">
-
-                <div class="d-flex
-                            justify-content-between
-                            align-items-center">
-
-                    <div>
-
-                        <small class="text-muted">
-                            Completed
-                        </small>
-
-                        <h3 class="mt-2">
-                            <%= completedAppointments %>
-                        </h3>
-
-                    </div>
-
-                    <i class="bi bi-check-circle
-                              text-success
-                              stat-icon"></i>
-
-                </div>
-
-            </div>
-
-        </div>
+    <% } %>
 
 
-        <!-- PATIENTS -->
+    <!-- SEARCH CARD -->
 
-        <div class="col-md-6 col-xl-3">
-
-            <div class="card stat-card p-3">
-
-                <div class="d-flex
-                            justify-content-between
-                            align-items-center">
-
-                    <div>
-
-                        <small class="text-muted">
-                            Total Patients
-                        </small>
-
-                        <h3 class="mt-2">
-                            <%= totalPatients %>
-                        </h3>
-
-                    </div>
-
-                    <i class="bi bi-people
-                              text-danger
-                              stat-icon"></i>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- =========================
-         QUICK ACTIONS
-    ========================= -->
-
-    <div class="card
-                shadow-sm
-                border-0
-                mb-4">
+    <div class="card management-card mb-4">
 
         <div class="card-body">
 
-            <h5 class="mb-3">
-                Quick Actions
-            </h5>
+            <div class="row align-items-center">
 
-            <a href="reception-add-appointment.jsp"
-               class="btn btn-primary me-2">
+                <div class="col-md-7">
 
-                <i class="bi bi-calendar-plus"></i>
-                Book Appointment
+                    <div class="input-group">
 
-            </a>
+                        <span class="input-group-text">
 
-            <a href="ReceptionAppointmentServlet"
-               class="btn btn-outline-primary me-2">
+                            <i class="bi bi-search"></i>
 
-                <i class="bi bi-calendar-check"></i>
-                View Appointments
+                        </span>
 
-            </a>
+                        <input
+                            type="text"
+                            id="patientSearch"
+                            class="form-control"
+                            placeholder="Search by patient name, phone or email...">
 
-            <a href="receptionBilling.jsp"
-               class="btn btn-outline-success">
+                    </div>
 
-                <i class="bi bi-receipt"></i>
-                View Billing
+                </div>
 
-            </a>
+
+                <div class="col-md-5 text-md-end mt-3 mt-md-0">
+
+                    <span class="badge bg-primary fs-6 p-2">
+
+                        Total Patients:
+                        <%= patients != null ? patients.size() : 0 %>
+
+                    </span>
+
+                </div>
+
+            </div>
 
         </div>
 
     </div>
 
 
-    <!-- =========================
-         RECENT APPOINTMENTS
-    ========================= -->
+    <!-- PATIENT TABLE -->
 
-    <div class="card
-                shadow-sm
-                border-0
-                dashboard-table">
+    <div class="card table-card">
 
-        <div class="card-header bg-white">
+        <div class="card-header bg-white py-3">
 
             <h5 class="mb-0">
-                Recent Appointments
+
+                <i class="bi bi-card-list"></i>
+                Registered Patients
+
             </h5>
 
         </div>
+
 
         <div class="card-body">
 
             <div class="table-responsive">
 
-                <table class="table table-hover">
+                <table
+                    class="table table-hover align-middle"
+                    id="patientTable">
 
                     <thead>
 
                     <tr>
 
-                        <th>ID</th>
-
-                        <th>Patient</th>
-
-                        <th>Dentist</th>
-
-                        <th>Date</th>
-
-                        <th>Time</th>
-
-                        <th>Status</th>
+                        <th>Patient ID</th>
+                        <th>Full Name</th>
+                        <th>Date of Birth</th>
+                        <th>Gender</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Address</th>
 
                     </tr>
 
                     </thead>
 
+
                     <tbody>
 
                     <%
-                        int count = 0;
+                    if (patients != null && !patients.isEmpty()) {
 
-                        for (Appointment appointment :
-                                appointments) {
-
-                            if (count >= 5) {
-                                break;
-                            }
-
-                            count++;
+                        for (Patient patient : patients) {
                     %>
 
                     <tr>
 
+                        <!-- PATIENT ID -->
+
                         <td>
-                            #<%= appointment.getAppointmentId() %>
+
+                            <strong>
+
+                                #<%= patient.getPatientId() %>
+
+                            </strong>
+
                         </td>
 
+
+                        <!-- FULL NAME -->
+
                         <td>
-                            <%= appointment.getPatientName() %>
+
+                            <strong>
+
+                                <%= patient.getFirstName() %>
+                                <%= patient.getLastName() %>
+
+                            </strong>
+
                         </td>
 
+
+                        <!-- DATE OF BIRTH -->
+
                         <td>
-                            <%= appointment.getDentistName() %>
+
+                            <%= patient.getDateOfBirth() %>
+
                         </td>
 
+
+                        <!-- GENDER -->
+
                         <td>
-                            <%= appointment.getAppointmentDate() %>
+
+                            <span class="badge bg-info text-dark">
+
+                                <%= patient.getGender() %>
+
+                            </span>
+
                         </td>
 
+
+                        <!-- PHONE -->
+
                         <td>
-                            <%= appointment.getAppointmentTime() %>
+
+                            <%= patient.getPhone() %>
+
                         </td>
 
+
+                        <!-- EMAIL -->
+
                         <td>
 
-                            <%
-                                String status =
-                                        appointment.getStatus();
-                            %>
+                            <%= patient.getEmail() != null
+                                ? patient.getEmail()
+                                : "-" %>
 
-                            <% if ("Completed"
-                                    .equalsIgnoreCase(status)) { %>
+                        </td>
 
-                                <span class="badge bg-success">
-                                    Completed
-                                </span>
 
-                            <% } else if ("Pending"
-                                    .equalsIgnoreCase(status)) { %>
+                        <!-- ADDRESS -->
 
-                                <span class="badge bg-warning
-                                             text-dark">
-                                    Pending
-                                </span>
+                        <td>
 
-                            <% } else { %>
-
-                                <span class="badge bg-danger">
-
-                                    <%= status %>
-
-                                </span>
-
-                            <% } %>
+                            <%= patient.getAddress() != null
+                                ? patient.getAddress()
+                                : "-" %>
 
                         </td>
 
@@ -592,6 +457,27 @@ body {
 
                     <%
                         }
+                    } else {
+                    %>
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            class="text-center text-muted py-4">
+
+                            <i class="bi bi-person-x fs-4"></i>
+
+                            <br>
+
+                            No patients found.
+
+                        </td>
+
+                    </tr>
+
+                    <%
+                    }
                     %>
 
                     </tbody>
@@ -604,12 +490,298 @@ body {
 
     </div>
 
-</div>
 
 </div>
 
 </div>
+
+</div>
+
+
+<!-- =========================
+     ADD PATIENT MODAL
+========================= -->
+
+<div
+    class="modal fade"
+    id="addPatientModal"
+    tabindex="-1">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <!-- MODAL HEADER -->
+
+            <div class="modal-header bg-primary text-white">
+
+                <h5 class="modal-title">
+
+                    <i class="bi bi-person-plus-fill"></i>
+                    Register New Patient
+
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <!-- FORM -->
+
+            <form
+                action="AddPatientServlet"
+                method="post">
+
+                <div class="modal-body">
+
+                    <div class="row">
+
+
+                        <!-- FIRST NAME -->
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                First Name
+
+                            </label>
+
+                            <input
+                                type="text"
+                                name="firstName"
+                                class="form-control"
+                                required>
+
+                        </div>
+
+
+                        <!-- LAST NAME -->
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                Last Name
+
+                            </label>
+
+                            <input
+                                type="text"
+                                name="lastName"
+                                class="form-control"
+                                required>
+
+                        </div>
+
+
+                        <!-- DATE OF BIRTH -->
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                Date of Birth
+
+                            </label>
+
+                            <input
+                                type="date"
+                                name="dateOfBirth"
+                                class="form-control"
+                                required>
+
+                        </div>
+
+
+                        <!-- GENDER -->
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                Gender
+
+                            </label>
+
+                            <select
+                                name="gender"
+                                class="form-select"
+                                required>
+
+                                <option value="">
+
+                                    Select Gender
+
+                                </option>
+
+                                <option value="Male">
+
+                                    Male
+
+                                </option>
+
+                                <option value="Female">
+
+                                    Female
+
+                                </option>
+
+                                <option value="Other">
+
+                                    Other
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- PHONE -->
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                Phone Number
+
+                            </label>
+
+                            <input
+                                type="tel"
+                                name="phone"
+                                class="form-control"
+                                required>
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+
+                                Email Address
+
+                            </label>
+
+                            <input
+                                type="email"
+                                name="email"
+                                class="form-control">
+
+                        </div>
+
+
+                        <!-- ADDRESS -->
+
+                        <div class="col-12 mb-3">
+
+                            <label class="form-label">
+
+                                Address
+
+                            </label>
+
+                            <textarea
+                                name="address"
+                                class="form-control"
+                                rows="3"
+                                required></textarea>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- MODAL FOOTER -->
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                        Cancel
+
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+
+                        <i class="bi bi-person-check-fill"></i>
+
+                        Register Patient
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- BOOTSTRAP JS -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+<!-- SEARCH FUNCTION -->
+
+<script>
+
+document
+    .getElementById("patientSearch")
+    .addEventListener("keyup", function () {
+
+        let searchText =
+            this.value.toLowerCase();
+
+        let rows =
+            document.querySelectorAll(
+                "#patientTable tbody tr"
+            );
+
+        rows.forEach(function (row) {
+
+            let rowText =
+                row.textContent.toLowerCase();
+
+            if (rowText.includes(searchText)) {
+
+                row.style.display = "";
+
+            } else {
+
+                row.style.display = "none";
+
+            }
+
+        });
+
+    });
+
+</script>
 
 </body>
-
 </html>

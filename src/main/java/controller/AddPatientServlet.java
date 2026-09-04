@@ -32,11 +32,10 @@ public class AddPatientServlet extends HttpServlet {
         patient.setAddress(request.getParameter("address"));
 
         boolean status = dao.addPatient(patient);
-
         if (status) {
-            response.sendRedirect("patients.jsp?success=1");
+            response.sendRedirect("receptionPatients.jsp?message=Patient registered successfully");
         } else {
-            response.sendRedirect("patients.jsp?error=1");
+            response.sendRedirect("receptionPatients.jsp?error=Failed to register patient");
         }
     }
 }
