@@ -84,7 +84,7 @@ body {
 }
 
 .contact-box {
-    background: linear-gradient(135deg, #1565c0, #1e88e5);
+    background: linear-gradient(#1e88e5, #1565c0, #1e88e5);
     color: white;
     padding: 30px;
     border-radius: 15px;
